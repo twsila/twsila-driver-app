@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "420649107654",
+    "project_id": "twsila-driver",
+    "storage_bucket": "twsila-driver.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:420649107654:android:c7305c0b240e2ada1897c7",
+        "android_client_info": {
+          "package_name": "com.twsila.driver.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcE0PEyBRCcU8QLCb6fNn58bDwW4ZGJt8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
