@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>$(BUNDLE_DISPLAY_NAME)</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(BUNDLE_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(FLUTTER_BUILD_NAME)</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Twsila Driver uses your camera to capture photos for your profile picture, identity verification documents (such as national ID front and back), vehicle registration photos, and trip-related images. For example, when you update your profile, you can take a photo directly with your camera instead of selecting from your photo library.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app needs microphone access to play notification sounds and audio alerts.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Twsila Driver uses your location to find nearby transportation requests, navigate to pickup and drop-off locations, track your position during active trips, and display your current location on the map. For example, when you search for available trips, the app uses your location to show you trips that are closest to your current position.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Twsila Driver uses your location in the background to continue tracking your position during active trips, allowing passengers to see your real-time location as you travel to their pickup point or complete their trip. This ensures accurate trip tracking and improves the service experience for both drivers and passengers.</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Twsila Driver uses your location to find nearby transportation requests, navigate to pickup and drop-off locations, track your position during active trips, and display your current location on the map. For example, when you search for available trips, the app uses your location to show you trips that are closest to your current position.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Twsila Driver uses your location to find nearby transportation requests, navigate to pickup and drop-off locations, track your position during active trips, and display your current location on the map. For example, when you search for available trips, the app uses your location to show you trips that are closest to your current position.</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>$(ASSET_PREFIX)LaunchScreen</string>
+	<key>UIMainStoryboardFile</key>
+	<string>Main</string>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+</dict>
+</plist>
