@@ -1,0 +1,4 @@
+# Add this line if .gitignore doesn't exist or add to existing one
+key.properties
+*.jks
+*.keystore
