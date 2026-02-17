@@ -1,0 +1,33 @@
+flavors:
+  development:
+    app:
+      name: "D-Captain - Business owner"
+    android:
+      applicationId: "com.twsila.driver.app"
+      firebase:
+        config: ".firebase/development/google-services.json"
+      icon: "assets/images/app_icon.jpeg"
+    ios:
+      bundleId: "com.twsila.driver.app"
+
+  staging:
+    app:
+      name: "S-Captain - Business owner"
+    android:
+      applicationId: "com.twsila.driver.app"
+      firebase:
+        config: ".firebase/staging/google-services.json"
+      icon: "assets/images/app_icon.jpeg"
+    ios:
+      bundleId: "com.twsila.driver.app"
+
+  production:
+    app:
+      name: "Captain - Business owner"
+    android:
+      applicationId: "com.twsila.driver.app"
+      firebase:
+        config: ".firebase/production/google-services.json"
+      icon: "assets/images/app_icon.jpeg"
+    ios:
+      bundleId: "com.twsila.driver.app"
