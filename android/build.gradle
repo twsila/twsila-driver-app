@@ -1,0 +1,73 @@
+buildscript {
+    ext.kotlin_version = '1.9.10'
+    repositories {
+        google {
+            content {
+                includeGroupByRegex "com\\.android.*"
+                includeGroupByRegex "com\\.google.*"
+                includeGroupByRegex "androidx.*"
+            }
+        }
+        mavenCentral()
+        gradlePluginPortal()
+        maven { url "https://maven.google.com" }
+        maven { url "https://jcenter.bintray.com" }
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:8.2.1"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.gms:google-services:4.4.0'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty("kotlin_version")) {
+            project.ext.kotlin_version = rootProject.ext.kotlin_version
+        }
+        
+        // Disable JDK image transformation for all subprojects
+        project.ext.set("android.experimental.enableJdkImageTransform", false)
+        
+        // Apply to all Android projects
+        if (project.plugins.hasPlugin('com.android.library') || project.plugins.hasPlugin('com.android.application')) {
+            project.android {
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_17
+                    targetCompatibility JavaVersion.VERSION_17
+                }
+                buildFeatures {
+                    buildConfig = true
+                }
+            }
+        }
+        
+        // Set Kotlin JVM target to 17 for all projects
+        if (project.plugins.hasPlugin('org.jetbrains.kotlin.android')) {
+            project.android {
+                kotlinOptions {
+                    jvmTarget = "17"
+                }
+            }
+        }
+    }
+}
+
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(':app')
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
