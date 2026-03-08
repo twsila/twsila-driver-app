@@ -1,3 +1,5 @@
+/// Distance matrix model for Google Distance Matrix API responses.
+/// File renamed from destance_matrix_model for correct spelling.
 
 class DistanceMatrix {
   final List<String>? destinations;
@@ -31,12 +33,11 @@ class DistanceMatrix {
         elements: elementsList,
         status: json['status'] as String?);
   }
-
 }
 
 class Element {
   final Distance? distance;
-  final Duration? duration;
+  final DurationInfo? duration;
   final String? status;
 
   Element({this.distance, this.duration, this.status});
@@ -49,7 +50,7 @@ class Element {
             ? Distance.fromJson(distanceJson)
             : null,
         duration: durationJson is Map<String, dynamic>
-            ? Duration.fromJson(durationJson)
+            ? DurationInfo.fromJson(durationJson)
             : null,
         status: json['status'] as String?);
   }
@@ -68,14 +69,15 @@ class Distance {
   }
 }
 
-class Duration {
+/// Named to avoid shadowing dart:core Duration.
+class DurationInfo {
   final String? text;
   final int? value;
 
-  Duration({this.text, this.value});
+  DurationInfo({this.text, this.value});
 
-  factory Duration.fromJson(Map<String, dynamic> json) {
-    return Duration(
+  factory DurationInfo.fromJson(Map<String, dynamic> json) {
+    return DurationInfo(
         text: json['text'] as String?,
         value: json['value'] as int?);
   }
