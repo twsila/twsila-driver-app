@@ -1,5 +1,5 @@
 name: taxi_for_you
-description: A new Flutter project.
+description: Twsila Driver mobile application.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -102,7 +102,7 @@ dependencies:
   custom_radio_grouped_button: ^2.2.1
   full_screen_image: ^2.0.0
   moyasar: ^2.0.10
-  intl: ^0.19.0
+  intl: ^0.20.2
   get: ^4.6.6
   just_audio: ^0.9.43
 
