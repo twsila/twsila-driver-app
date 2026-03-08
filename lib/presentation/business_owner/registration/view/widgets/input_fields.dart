@@ -384,8 +384,8 @@ class _RegistartionBOInputFieldsState extends State<RegistartionBOInputFields> {
                   foregroundColor: ColorManager.primary, // Button text color
                 ),
               ),
-              dialogBackgroundColor: Colors.white,
-              dialogTheme: DialogTheme(
+              dialogTheme: DialogThemeData(
+                backgroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
