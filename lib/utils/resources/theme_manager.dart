@@ -14,25 +14,23 @@ ThemeData getApplicationTheme() {
     primaryColorDark: ColorManager.darkPrimary,
     disabledColor: ColorManager.grey1,
     splashColor: ColorManager.lightPrimary,
-    dialogBackgroundColor: ColorManager.white,
     bottomSheetTheme: BottomSheetThemeData(surfaceTintColor: Colors.white),
 
-    // ✅ FIXED: use DialogTheme
-    dialogTheme: DialogTheme(
+    // Use DialogThemeData (Flutter 3.16+)
+    dialogTheme: DialogThemeData(
       backgroundColor: ColorManager.white,
     ),
 
-    // ✅ FIXED: use CardTheme
-    cardTheme: CardTheme(
+    // Use CardThemeData (Flutter 3.16+)
+    cardTheme: CardThemeData(
       color: ColorManager.white,
       shadowColor: ColorManager.grey,
       elevation: AppSize.s4,
     ),
 
-    // app bar theme
     appBarTheme: AppBarTheme(
       centerTitle: true,
-      color: ColorManager.primary,
+      backgroundColor: ColorManager.primary,
       elevation: AppSize.s4,
       shadowColor: ColorManager.lightPrimary,
       titleTextStyle: getRegularStyle(
