@@ -11,7 +11,7 @@ import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 import '../../../app/app_prefs.dart';
 import '../../../app/constants.dart';
 import '../../../app/di.dart';
-import '../../../domain/model/destance_matrix_model.dart';
+import '../../../domain/model/distance_matrix_model.dart';
 
 class LocationHelper {
   final LocatitonGeocoder geocoder = LocatitonGeocoder(Platform.isIOS
