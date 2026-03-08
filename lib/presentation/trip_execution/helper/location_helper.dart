@@ -33,7 +33,7 @@ class LocationHelper {
       required LocationModel destinationLocation}) async {
     final AppPreferences _appPrefs = instance<AppPreferences>();
     String resultStringData = '';
-    Dio dio = new Dio();
+    Dio dio = Dio();
     var matrixUrl =
         'https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${destinationLocation.latitude},${destinationLocation.longitude}&language=${_appPrefs.getAppLanguage()}&origins=${currentLocation.latitude},${currentLocation.longitude}&key=${Platform.isIOS ? Constants.GOOGLE_API_KEY_IOS : Constants.GOOGLE_API_KEY_ANDROID}';
     try {
@@ -62,7 +62,7 @@ class LocationHelper {
   Future<String> getCityNameByCoordinates(double lat, double long) async {
     final coordinates = Coordinates(lat, long);
     var address = await geocoder.findAddressesFromCoordinates(coordinates);
-    return address.length > 0
+    return address.isNotEmpty
         ? address[0].locality ?? address[0].adminArea ?? ''
         : '';
   }
