@@ -127,7 +127,7 @@ class RouteGenerator {
       case Routes.mainRoute:
         initLogoutModule();
         initMyTripsModule();
-        initLookupsModule();
+        initLoopkupsModule();
         initTripsModule();
         return MaterialPageRoute(builder: (_) => MainView());
       case Routes.verifyOtpRoute:
