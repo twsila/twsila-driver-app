@@ -104,7 +104,7 @@ class _UpdateDocumentDataBottomSheetState
                   child: GestureDetector(
                     onTap: () async {
                       var pickedFiles = await _imagePicker.pickMultiImage();
-                      if (pickedFiles != null && pickedFiles.isNotEmpty) {
+                      if (pickedFiles.isNotEmpty) {
                         List<File> files = [];
                         await Future.forEach(pickedFiles, (XFile file) {
                           files.add(File(file.path));
@@ -244,7 +244,7 @@ class _UpdateDocumentDataBottomSheetState
 
   _imageFrom(bool isFront, ImageSource imageSource) async {
     var pickedImage = await _imagePicker.pickImage(
-        source: imageSource, imageQuality: Constants.IMAGE_QUALITY_COMPRESS);
+        source: imageSource, imageQuality: Constants.imageQualityCompress);
     if (pickedImage != null) {
       setState(() {
         if (isFront)

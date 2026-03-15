@@ -6,7 +6,6 @@ import 'package:meta/meta.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:taxi_for_you/app/constants.dart';
 import 'package:taxi_for_you/domain/usecase/update_bo_profile_request.dart';
-import 'package:taxi_for_you/domain/usecase/update_driver_profile_usecase.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/model/Business_owner_model.dart';
 
 import '../../../app/app_prefs.dart';
@@ -54,7 +53,6 @@ class UpdateBoBloc extends Bloc<UpdateBoEvent, UpdateBoState> {
 
     UpdateBoProfileUseCase updateBoProfileUseCase =
         instance<UpdateBoProfileUseCase>();
-    File? profilePhoto;
     List<File> entityImages = [];
 
     if (event.businessEntityImagesFromFile != null) {
@@ -65,7 +63,7 @@ class UpdateBoBloc extends Bloc<UpdateBoEvent, UpdateBoState> {
           (String imageFilePath) async {
         File boBusinessEntityImages = await changeImageFileNameOnly(
             File(imageFilePath),
-            "${Constants.BUSINESS_OWNER_PHOTO_DOCUMENT_SUBSTRING}${counter}.jpg");
+            "${Constants.businessOwnerPhotoDocumentSubstring}${counter}.jpg");
         carImages.add(boBusinessEntityImages);
         counter++;
       });
