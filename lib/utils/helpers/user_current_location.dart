@@ -10,8 +10,8 @@ import '../resources/strings_manager.dart';
 
 class UserCurrentLocation {
   final LocatitonGeocoder geocoder = LocatitonGeocoder(Platform.isIOS
-      ? Constants.GOOGLE_API_KEY_IOS
-      : Constants.GOOGLE_API_KEY_ANDROID);
+      ? Constants.googleApiKeyIos
+      : Constants.googleApiKeyAndroid);
 
   Future checkLocationPermission() async {
     bool serviceEnabled;

@@ -117,8 +117,8 @@ class MapProvider with ChangeNotifier {
     resetPolyPoints();
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
         googleApiKey: Platform.isIOS
-            ? Constants.GOOGLE_API_KEY_IOS
-            : Constants.GOOGLE_API_KEY_ANDROID,
+            ? Constants.googleApiKeyIos
+            : Constants.googleApiKeyAndroid,
         request: PolylineRequest(
             origin:
                 PointLatLng(sourceLocation.latitude, sourceLocation.longitude),

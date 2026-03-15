@@ -82,7 +82,7 @@ class UpdateDriverBloc extends Bloc<UpdateDriverEvent, UpdateDriverState> {
     List<File> driverImages = [];
     if (event.profilePhoto != null) {
       profilePhoto = await changeImageFileNameOnly(
-          event.profilePhoto!, Constants.DRIVER_PHOTO_IMAGE_STRING);
+          event.profilePhoto!, DriverImagesConstants.DRIVER_PHOTO_IMAGE_STRING);
       driverImages.add(profilePhoto);
     }
 
