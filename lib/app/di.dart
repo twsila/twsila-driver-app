@@ -270,7 +270,7 @@ initTripSummaryModule() {
   }
 }
 
-initLookupsModule() {
+initLoopkupsModule() {
   if (!GetIt.I.isRegistered<LookupsUseCase>()) {
     instance.registerFactory<LookupsUseCase>(() => LookupsUseCase(instance()));
   }
@@ -294,6 +294,10 @@ initBODriversCarsModule() {
   if (!GetIt.I.isRegistered<BusinessOwnerDriversUseCase>()) {
     instance.registerFactory<BusinessOwnerDriversUseCase>(
         () => BusinessOwnerDriversUseCase(instance()));
+  }
+  if (!GetIt.I.isRegistered<SearchDriversByMobileUseCase>()) {
+    instance.registerFactory<SearchDriversByMobileUseCase>(
+        () => SearchDriversByMobileUseCase(instance()));
   }
   if (!GetIt.I.isRegistered<SearchDriversByMobileUseCase>()) {
     instance.registerFactory<SearchDriversByMobileUseCase>(
