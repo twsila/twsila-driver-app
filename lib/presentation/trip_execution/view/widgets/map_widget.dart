@@ -233,8 +233,8 @@ class _MapWidgetState extends State<MapWidget> {
           PolylineResult result =
               await polylinePoints.getRouteBetweenCoordinates(
             googleApiKey: Platform.isIOS
-                ? Constants.GOOGLE_API_KEY_IOS
-                : Constants.GOOGLE_API_KEY_ANDROID,
+                ? Constants.googleApiKeyIos
+                : Constants.googleApiKeyAndroid,
             request: PolylineRequest(
               origin: PointLatLng(
                 currentLocation!.latitude,
@@ -311,8 +311,8 @@ class _MapWidgetState extends State<MapWidget> {
           PolylineResult result =
               await polylinePoints.getRouteBetweenCoordinates(
             googleApiKey: Platform.isIOS
-                ? Constants.GOOGLE_API_KEY_IOS
-                : Constants.GOOGLE_API_KEY_ANDROID,
+                ? Constants.googleApiKeyIos
+                : Constants.googleApiKeyAndroid,
             request: PolylineRequest(
               origin: PointLatLng(
                 widget.tripModel.tripDetails.pickupLocation.latitude!,

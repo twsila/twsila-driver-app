@@ -11,12 +11,12 @@ import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 import '../../../app/app_prefs.dart';
 import '../../../app/constants.dart';
 import '../../../app/di.dart';
-import '../../../domain/model/distance_matrix_model.dart';
+import '../../../domain/model/destance_matrix_model.dart';
 
 class LocationHelper {
   final LocatitonGeocoder geocoder = LocatitonGeocoder(Platform.isIOS
-      ? Constants.GOOGLE_API_KEY_IOS
-      : Constants.GOOGLE_API_KEY_ANDROID);
+      ? Constants.googleApiKeyIos
+      : Constants.googleApiKeyAndroid);
 
   double distanceBetweenTwoLocationInMeters(
       {required double lat1,
@@ -33,9 +33,9 @@ class LocationHelper {
       required LocationModel destinationLocation}) async {
     final AppPreferences _appPrefs = instance<AppPreferences>();
     String resultStringData = '';
-    Dio dio = Dio();
+    Dio dio = new Dio();
     var matrixUrl =
-        'https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${destinationLocation.latitude},${destinationLocation.longitude}&language=${_appPrefs.getAppLanguage()}&origins=${currentLocation.latitude},${currentLocation.longitude}&key=${Platform.isIOS ? Constants.GOOGLE_API_KEY_IOS : Constants.GOOGLE_API_KEY_ANDROID}';
+        'https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${destinationLocation.latitude},${destinationLocation.longitude}&language=${_appPrefs.getAppLanguage()}&origins=${currentLocation.latitude},${currentLocation.longitude}&key=${Platform.isIOS ? Constants.googleApiKeyIos : Constants.googleApiKeyAndroid}';
     try {
       var response = await dio.get(matrixUrl);
       final data = response.data;
@@ -62,7 +62,7 @@ class LocationHelper {
   Future<String> getCityNameByCoordinates(double lat, double long) async {
     final coordinates = Coordinates(lat, long);
     var address = await geocoder.findAddressesFromCoordinates(coordinates);
-    return address.isNotEmpty
+    return address.length > 0
         ? address[0].locality ?? address[0].adminArea ?? ''
         : '';
   }

@@ -7,7 +7,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:taxi_for_you/app/app_prefs.dart';
-import 'package:taxi_for_you/presentation/common/widgets/CustomAutoFullSms.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/documents_helper.dart';
 import 'package:taxi_for_you/utils/dialogs/custom_dialog.dart';
@@ -21,7 +20,6 @@ import '../../../../app/di.dart';
 import '../../../../domain/model/car_brand_models_model.dart';
 import '../../../../domain/model/lookupValueModel.dart';
 import '../../../../domain/model/year_of_manufacture_model.dart';
-import '../../../../utils/helpers/keep_alive_widget.dart';
 import '../../../../utils/resources/color_manager.dart';
 import '../../../../utils/resources/font_manager.dart';
 import '../../../../utils/resources/strings_manager.dart';
@@ -38,9 +36,10 @@ import '../helpers/registration_request.dart';
 import '../widgets/uploadDocumentWidget.dart';
 
 class ServiceRegistrationSecondStep extends StatefulWidget {
-  RegistrationRequest registrationRequest;
+  final RegistrationRequest registrationRequest;
 
-  ServiceRegistrationSecondStep({required this.registrationRequest, Key? key})
+  const ServiceRegistrationSecondStep(
+      {required this.registrationRequest, Key? key})
       : super(key: key);
 
   @override
@@ -50,6 +49,8 @@ class ServiceRegistrationSecondStep extends StatefulWidget {
 
 class _ServiceRegistrationSecondStepState
     extends State<ServiceRegistrationSecondStep> {
+  late RegistrationRequest _registrationRequest;
+
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   AppPreferences _appPreferences = instance<AppPreferences>();
   bool _displayLoadingIndicator = false;
@@ -102,23 +103,24 @@ class _ServiceRegistrationSecondStepState
 
   @override
   void initState() {
+    _registrationRequest = _registrationRequest;
     _carNotesController.text =
-        widget.registrationRequest.carNotes?.toString() ?? "";
+        _registrationRequest.carNotes?.toString() ?? "";
     _plateNumberController.text =
-        widget.registrationRequest.plateNumber?.toString() ?? "";
+        _registrationRequest.plateNumber?.toString() ?? "";
 
     handlePreSelectedDocumentsData();
 
     BlocProvider.of<ServiceRegistrationBloc>(context)
         .add(GetCarBrandAndModel());
 
-    if (widget.registrationRequest.serviceTypeParam != null &&
-        widget.registrationRequest.serviceTypeParam!.isNotEmpty &&
-        (widget.registrationRequest.serviceTypeParam == "PERSONS" ||
-            widget.registrationRequest.serviceTypeParam == "BUS")) {
+    if (_registrationRequest.serviceTypeParam != null &&
+        _registrationRequest.serviceTypeParam!.isNotEmpty &&
+        (_registrationRequest.serviceTypeParam == "PERSONS" ||
+            _registrationRequest.serviceTypeParam == "BUS")) {
       mustEnterCarManufactureAndModelData = true;
       BlocProvider.of<ServiceRegistrationBloc>(context).add(GetCarManufacture(
-          selectedServiceType: widget.registrationRequest.serviceTypeParam!));
+          selectedServiceType: _registrationRequest.serviceTypeParam!));
     }
     {}
 
@@ -152,38 +154,38 @@ class _ServiceRegistrationSecondStepState
 
   checkSelectedDocumentDataBefore(String frontImageTitle) {
     if (frontImageTitle == AppStrings.carDocumentFrontImage.tr() &&
-        widget.registrationRequest.carDocumentPhotosData != null) {
+        _registrationRequest.carDocumentPhotosData != null) {
       frontImageFile =
-          widget.registrationRequest.carDocumentPhotosData!.frontImage;
+          _registrationRequest.carDocumentPhotosData!.frontImage;
       backImageFile =
-          widget.registrationRequest.carDocumentPhotosData!.backImage;
-      expiryDate = widget.registrationRequest.carDocumentPhotosData!.expireDate;
+          _registrationRequest.carDocumentPhotosData!.backImage;
+      expiryDate = _registrationRequest.carDocumentPhotosData!.expireDate;
     } else if (frontImageTitle == AppStrings.carDriverLicenseFrontImage.tr() &&
-        widget.registrationRequest.carDriverLicensePhotosData != null) {
+        _registrationRequest.carDriverLicensePhotosData != null) {
       frontImageFile =
-          widget.registrationRequest.carDriverLicensePhotosData!.frontImage;
+          _registrationRequest.carDriverLicensePhotosData!.frontImage;
       backImageFile =
-          widget.registrationRequest.carDriverLicensePhotosData!.backImage;
+          _registrationRequest.carDriverLicensePhotosData!.backImage;
       expiryDate =
-          widget.registrationRequest.carDriverLicensePhotosData!.expireDate;
+          _registrationRequest.carDriverLicensePhotosData!.expireDate;
     } else if (frontImageTitle ==
             AppStrings.carDriverIdentityCardFrontImage.tr() &&
-        widget.registrationRequest.carDriverNationalIdPhotosData != null) {
+        _registrationRequest.carDriverNationalIdPhotosData != null) {
       frontImageFile =
-          widget.registrationRequest.carDriverNationalIdPhotosData!.frontImage;
+          _registrationRequest.carDriverNationalIdPhotosData!.frontImage;
       backImageFile =
-          widget.registrationRequest.carDriverNationalIdPhotosData!.backImage;
+          _registrationRequest.carDriverNationalIdPhotosData!.backImage;
       expiryDate =
-          widget.registrationRequest.carDriverNationalIdPhotosData!.expireDate;
+          _registrationRequest.carDriverNationalIdPhotosData!.expireDate;
     } else if (frontImageTitle ==
             AppStrings.carOwnerIdentityCardFrontImage.tr() &&
-        widget.registrationRequest.carOwnerNationalIdPhotosData != null) {
+        _registrationRequest.carOwnerNationalIdPhotosData != null) {
       frontImageFile =
-          widget.registrationRequest.carOwnerNationalIdPhotosData!.frontImage;
+          _registrationRequest.carOwnerNationalIdPhotosData!.frontImage;
       backImageFile =
-          widget.registrationRequest.carOwnerNationalIdPhotosData!.backImage;
+          _registrationRequest.carOwnerNationalIdPhotosData!.backImage;
       expiryDate =
-          widget.registrationRequest.carOwnerNationalIdPhotosData!.expireDate;
+          _registrationRequest.carOwnerNationalIdPhotosData!.expireDate;
     }
   }
 
@@ -213,23 +215,22 @@ class _ServiceRegistrationSecondStepState
           _loadingCars = false;
           AllCarModelList = state.carModelList;
           // carModelList = state.carModelList;
-          if (widget.registrationRequest.carModelId != null &&
-              carModelList != null) {
-            selectedCarModel = carModelList!.firstWhere((element) =>
-                element.id.toString() == widget.registrationRequest.carModelId);
+          if (_registrationRequest.carModelId != null) {
+            selectedCarModel = carModelList.firstWhere((element) =>
+                element.id.toString() == _registrationRequest.carModelId);
           }
         }
         if (state is CarsManuSuccess) {
           _loadingCarManu = false;
           carManuList = state.carManuList;
 
-          if (widget.registrationRequest.carManufacturerTypeId != null &&
+          if (_registrationRequest.carManufacturerTypeId != null &&
               carManuList != null &&
               carManu.isNotEmpty) {
             carManu = carManuList!
                 .firstWhere((CarManufacturerModel element) =>
                     element.id.toString() ==
-                    widget.registrationRequest.carManufacturerTypeId)
+                    _registrationRequest.carManufacturerTypeId)
                 .toString();
           }
         }
@@ -243,19 +244,19 @@ class _ServiceRegistrationSecondStepState
           _loadingYears = false;
           yearOfManufactureList = list;
 
-          if (widget.registrationRequest.vehicleYearOfManufacture != null &&
+          if (_registrationRequest.vehicleYearOfManufacture != null &&
               yearOfManufactureList != null) {
             vehicleYearOfManufacture = yearOfManufactureList!
                 .firstWhere((YearOfManufactureModel element) =>
                     element.value.toString() ==
-                    widget.registrationRequest.vehicleYearOfManufacture)
+                    _registrationRequest.vehicleYearOfManufacture)
                 .value
                 .toString();
           }
         }
 
         if (state is ServiceRegistrationSuccess) {
-          widget.registrationRequest = RegistrationRequest.empty();
+          _registrationRequest = RegistrationRequest.empty();
           Navigator.pushReplacementNamed(
               context, Routes.serviceAppliedSuccessfullyView);
         }
@@ -297,24 +298,24 @@ class _ServiceRegistrationSecondStepState
         if (state is CarDocumentValid) {
           carDocument = state.carDocument;
           isCarDocumentValid = true;
-          widget.registrationRequest.carDocumentPhotosData = state.carDocument;
+          _registrationRequest.carDocumentPhotosData = state.carDocument;
         }
         if (state is driverIdValid) {
           driverIdDocument = state.driverIdDocument;
           isDriverIdValid = true;
-          widget.registrationRequest.carDriverNationalIdPhotosData =
+          _registrationRequest.carDriverNationalIdPhotosData =
               state.driverIdDocument;
         }
         if (state is ownerIdValid) {
           ownerIdDocument = state.ownerIdDocument;
           isOwnerIdValid = true;
-          widget.registrationRequest.carOwnerNationalIdPhotosData =
+          _registrationRequest.carOwnerNationalIdPhotosData =
               state.ownerIdDocument;
         }
         if (state is driverLicenseValid) {
           driverLicenseDocument = state.driverLicenseDocument;
           isDriverLicValid = true;
-          widget.registrationRequest.carDriverLicensePhotosData =
+          _registrationRequest.carDriverLicensePhotosData =
               state.driverLicenseDocument;
         }
 
@@ -433,7 +434,7 @@ class _ServiceRegistrationSecondStepState
                     onTap: () {
                       setState(() {
                         carModelList.isNotEmpty
-                            ? _showBottomSheet(carModelList ?? [])
+                            ? _showBottomSheet(carModelList)
                             : ToastHandler(context).showToast(
                                 AppStrings.pleaseSelectCarManuFirts.tr(),
                                 Toast.LENGTH_LONG);
@@ -555,7 +556,7 @@ class _ServiceRegistrationSecondStepState
                         AppStrings.plateNumberValidationMessage.tr();
                   } else {
                     plateNumberValidation = "";
-                    widget.registrationRequest.plateNumber = plateNumber;
+                    _registrationRequest.plateNumber = plateNumber;
                   }
                 });
               },
@@ -576,7 +577,7 @@ class _ServiceRegistrationSecondStepState
               controller: _carNotesController,
               onChanged: (value) {
                 carNotes = value;
-                widget.registrationRequest.carNotes = carNotes;
+                _registrationRequest.carNotes = carNotes;
               },
               decoration: new InputDecoration(
                 fillColor: Colors.white,
@@ -605,7 +606,7 @@ class _ServiceRegistrationSecondStepState
               AppStrings.addPhotos.tr(),
               Image.asset(ImageAssets.photosIcon, width: AppSize.s20),
               ColorManager.secondaryColor,
-              widget.registrationRequest,
+              _registrationRequest,
               fontSize: FontSize.s10,
             ),
             isCarDocumentValid
@@ -1014,7 +1015,7 @@ class _ServiceRegistrationSecondStepState
   _imageFromGallery(Documents documents, int imageDir) async {
     var image = await _imagePicker.pickImage(
         source: ImageSource.gallery,
-        imageQuality: Constants.IMAGE_QUALITY_COMPRESS);
+        imageQuality: Constants.imageQualityCompress);
     BlocProvider.of<ServiceRegistrationBloc>(context).add(imageDir == 0
         ? SetDocumentForView(
             document: documents, frontImage: image, documentPicked: imageDir)
@@ -1025,7 +1026,7 @@ class _ServiceRegistrationSecondStepState
   _imageFromCamera(Documents documents, int imageDir) async {
     var image = await _imagePicker.pickImage(
         source: ImageSource.camera,
-        imageQuality: Constants.IMAGE_QUALITY_COMPRESS);
+        imageQuality: Constants.imageQualityCompress);
     BlocProvider.of<ServiceRegistrationBloc>(context).add(imageDir == 0
         ? SetDocumentForView(
             document: documents, frontImage: image, documentPicked: imageDir)
@@ -1038,38 +1039,33 @@ class _ServiceRegistrationSecondStepState
         elevation: 10,
         context: context,
         backgroundColor: ColorManager.white,
-        builder: (ctx) => carModelList != null
-            ? ListView.builder(
-                itemCount: carModelList.length,
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                    onTap: () {
-                      setState(() {
-                        Navigator.pop(context);
-                        selectedCarModel = carModelList[index];
-
-                        widget.registrationRequest.carModelId =
-                            selectedCarModel!.id.toString();
-                      });
-                    },
-                    child: ListTile(
-                        title: Text(_appPreferences.getAppLanguage() == "ar"
-                            ? carModelList[index].modelNameAr
-                            : carModelList[index].modelName),
-                        subtitle: Text(_appPreferences.getAppLanguage() == "ar"
-                            ? carModelList[index]
-                                .carManufacturer
-                                .carManufacturerAr
-                            : carModelList[index]
-                                .carManufacturer
-                                .carManufacturerEn)),
-                  );
-                },
-              )
-            : CircularProgressIndicator(
-                color: ColorManager.primary,
-              ));
+        builder: (ctx) => ListView.builder(
+              itemCount: carModelList.length,
+              shrinkWrap: true,
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                  onTap: () {
+                    setState(() {
+                      Navigator.pop(context);
+                      selectedCarModel = carModelList[index];
+                      _registrationRequest.carModelId =
+                          selectedCarModel!.id.toString();
+                    });
+                  },
+                  child: ListTile(
+                      title: Text(_appPreferences.getAppLanguage() == "ar"
+                          ? carModelList[index].modelNameAr
+                          : carModelList[index].modelName),
+                      subtitle: Text(_appPreferences.getAppLanguage() == "ar"
+                          ? carModelList[index]
+                              .carManufacturer
+                              .carManufacturerAr
+                          : carModelList[index]
+                              .carManufacturer
+                              .carManufacturerEn)),
+                );
+              },
+            ));
   }
 
   void _showBottomCarManuSheet(List<CarManufacturerModel> carManuList) {
@@ -1077,46 +1073,42 @@ class _ServiceRegistrationSecondStepState
         elevation: 10,
         context: context,
         backgroundColor: ColorManager.white,
-        builder: (ctx) => carManuList != null
-            ? ListView.builder(
-                itemCount: carManuList.length,
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                    onTap: () async {
-                      carManu = _appPreferences.getAppLanguage() == "ar"
-                          ? carManuList[index].carManufacturerAr
-                          : carManuList[index].carManufacturerEn;
-                      widget.registrationRequest.carManufacturerTypeId =
-                          carManuList[index].id.toString();
+        builder: (ctx) => ListView.builder(
+              itemCount: carManuList.length,
+              shrinkWrap: true,
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                  onTap: () async {
+                    carManu = _appPreferences.getAppLanguage() == "ar"
+                        ? carManuList[index].carManufacturerAr
+                        : carManuList[index].carManufacturerEn;
+                    _registrationRequest.carManufacturerTypeId =
+                        carManuList[index].id.toString();
 
-                      selectedCarModel = null;
-                      if (AllCarModelList != null) {
-                        carModelList.clear();
-                        await Future.forEach(AllCarModelList!,
-                            (CarModel carModel) {
-                          if (carModel.carManufacturer.id ==
-                              carManuList[index].id) {
-                            carModelList.add(carModel);
-                          }
-                        });
-                      }
-
-                      setState(() {
-                        Navigator.pop(context);
+                    selectedCarModel = null;
+                    if (AllCarModelList != null) {
+                      carModelList.clear();
+                      await Future.forEach(AllCarModelList!,
+                          (CarModel carModel) {
+                        if (carModel.carManufacturer.id ==
+                            carManuList[index].id) {
+                          carModelList.add(carModel);
+                        }
                       });
-                    },
-                    child: ListTile(
-                      title: Text(_appPreferences.getAppLanguage() == "ar"
-                          ? carManuList[index].carManufacturerAr
-                          : carManuList[index].carManufacturerEn),
-                    ),
-                  );
-                },
-              )
-            : CircularProgressIndicator(
-                color: ColorManager.primary,
-              ));
+                    }
+
+                    setState(() {
+                      Navigator.pop(context);
+                    });
+                  },
+                  child: ListTile(
+                    title: Text(_appPreferences.getAppLanguage() == "ar"
+                        ? carManuList[index].carManufacturerAr
+                        : carManuList[index].carManufacturerEn),
+                  ),
+                );
+              },
+            ));
   }
 
   void _showYearsOfManuBottomSheet(
@@ -1125,30 +1117,26 @@ class _ServiceRegistrationSecondStepState
         elevation: 10,
         context: context,
         backgroundColor: ColorManager.white,
-        builder: (ctx) => yearOfManufactureList != null
-            ? ListView.builder(
-                itemCount: yearOfManufactureList.length,
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                    onTap: () {
-                      setState(() {
-                        Navigator.pop(context);
-                        vehicleYearOfManufacture =
-                            yearOfManufactureList[index].value;
-                        widget.registrationRequest.vehicleYearOfManufacture =
-                            vehicleYearOfManufacture;
-                      });
-                    },
-                    child: ListTile(
-                      title: Text(yearOfManufactureList[index].value),
-                    ),
-                  );
-                },
-              )
-            : CircularProgressIndicator(
-                color: ColorManager.primary,
-              ));
+        builder: (ctx) => ListView.builder(
+              itemCount: yearOfManufactureList.length,
+              shrinkWrap: true,
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                  onTap: () {
+                    setState(() {
+                      Navigator.pop(context);
+                      vehicleYearOfManufacture =
+                          yearOfManufactureList[index].value;
+                      _registrationRequest.vehicleYearOfManufacture =
+                          vehicleYearOfManufacture;
+                    });
+                  },
+                  child: ListTile(
+                    title: Text(yearOfManufactureList[index].value),
+                  ),
+                );
+              },
+            ));
   }
 
   void clearDocumentData() {
@@ -1159,35 +1147,35 @@ class _ServiceRegistrationSecondStepState
   }
 
   void handlePreSelectedDocumentsData() {
-    if (widget.registrationRequest.carDocumentPhotosData != null) {
-      carDocument = widget.registrationRequest.carDocumentPhotosData!;
+    if (_registrationRequest.carDocumentPhotosData != null) {
+      carDocument = _registrationRequest.carDocumentPhotosData!;
       isCarDocumentValid = true;
     }
-    if (widget.registrationRequest.carDriverLicensePhotosData != null) {
+    if (_registrationRequest.carDriverLicensePhotosData != null) {
       driverLicenseDocument =
-          widget.registrationRequest.carDriverLicensePhotosData!;
+          _registrationRequest.carDriverLicensePhotosData!;
       isDriverLicValid = true;
     }
-    if (widget.registrationRequest.carOwnerNationalIdPhotosData != null) {
+    if (_registrationRequest.carOwnerNationalIdPhotosData != null) {
       ownerIdDocument =
-          widget.registrationRequest.carOwnerNationalIdPhotosData!;
+          _registrationRequest.carOwnerNationalIdPhotosData!;
       isOwnerIdValid = true;
     }
-    if (widget.registrationRequest.carDriverNationalIdPhotosData != null) {
+    if (_registrationRequest.carDriverNationalIdPhotosData != null) {
       driverIdDocument =
-          widget.registrationRequest.carDriverNationalIdPhotosData!;
+          _registrationRequest.carDriverNationalIdPhotosData!;
       isDriverIdValid = true;
     }
-    if (widget.registrationRequest.carImages != null) {
-      carPhotos.addAll(widget.registrationRequest.carImages!);
+    if (_registrationRequest.carImages != null) {
+      carPhotos.addAll(_registrationRequest.carImages!);
     }
-    if (widget.registrationRequest.plateNumber != null &&
-        widget.registrationRequest.plateNumber!.isNotEmpty) {
-      plateNumber = widget.registrationRequest.plateNumber!;
+    if (_registrationRequest.plateNumber != null &&
+        _registrationRequest.plateNumber!.isNotEmpty) {
+      plateNumber = _registrationRequest.plateNumber!;
     }
-    if (widget.registrationRequest.carNotes != null &&
-        widget.registrationRequest.carNotes!.isNotEmpty) {
-      carNotes = widget.registrationRequest.carNotes!;
+    if (_registrationRequest.carNotes != null &&
+        _registrationRequest.carNotes!.isNotEmpty) {
+      carNotes = _registrationRequest.carNotes!;
     }
   }
 }
