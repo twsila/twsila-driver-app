@@ -16,12 +16,10 @@ ThemeData getApplicationTheme() {
     splashColor: ColorManager.lightPrimary,
     bottomSheetTheme: BottomSheetThemeData(surfaceTintColor: Colors.white),
 
-    // Use DialogThemeData (Flutter 3.16+)
     dialogTheme: DialogThemeData(
       backgroundColor: ColorManager.white,
     ),
 
-    // Use CardThemeData (Flutter 3.16+)
     cardTheme: CardThemeData(
       color: ColorManager.white,
       shadowColor: ColorManager.grey,
