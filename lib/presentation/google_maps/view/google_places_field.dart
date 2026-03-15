@@ -68,8 +68,8 @@ class _GoogleMapsPlacesFieldState extends State<GoogleMapsPlacesField> {
           return GooglePlaceAutoCompleteTextField(
             textEditingController: widget.controller,
             googleAPIKey: Platform.isIOS
-                ? Constants.GOOGLE_API_KEY_IOS
-                : Constants.GOOGLE_API_KEY_ANDROID,
+                ? Constants.googleApiKeyIos
+                : Constants.googleApiKeyAndroid,
             debounceTime: 400,
             textStyle: Theme.of(context)
                 .textTheme
