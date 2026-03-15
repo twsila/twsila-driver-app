@@ -35,6 +35,9 @@ class PageBuilder {
   /// When true, app bar extends into top safe area (status bar) and uses its background color there.
   bool extendAppBarIntoSafeArea;
 
+  /// Optional toolbar height when using extended app bar (e.g. for Welcome + name + bottom space). Defaults to 56.
+  double? preferredToolbarHeight;
+
   PageBuilder({
     this.appBarActions,
     this.showAppLogoAtTheEnd = false,
@@ -67,5 +70,6 @@ class PageBuilder {
     this.appBarShape,
     this.appBarForegroundColor,
     this.extendAppBarIntoSafeArea = false,
+    this.preferredToolbarHeight,
   });
 }

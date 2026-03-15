@@ -503,76 +503,91 @@ class _CustomStepperState extends State<CustomStepper>
         MaterialLocalizations.of(context);
 
     const OutlinedBorder buttonShape = RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(2)));
-    const EdgeInsets buttonPadding = EdgeInsets.symmetric(horizontal: 16.0);
+        borderRadius: BorderRadius.all(Radius.circular(12)));
+    const EdgeInsets buttonPadding = EdgeInsets.symmetric(
+        horizontal: 20.0, vertical: 14.0);
 
     return Container(
       margin: const EdgeInsets.only(top: 16.0),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints.tightFor(height: 48.0),
-        child: Row(
-          // The Material spec no longer includes a Stepper widget. The continue
-          // and cancel button styles have been configured to match the original
-          // version of this widget.
-          children: <Widget>[
-            widget.steps[index].continueButtonLabel != ''
-                ? Expanded(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          widget.steps[index].continueButtonLabel != ''
+              ? Expanded(
+                  child: Material(
+                    borderRadius: BorderRadius.circular(12),
+                    elevation: 2,
+                    shadowColor: Colors.black26,
                     child: TextButton(
-                    onPressed: widget.onStepContinue,
-                    style: ButtonStyle(
-                      foregroundColor:
-                          MaterialStateProperty.resolveWith<Color?>(
-                              (Set<MaterialState> states) {
-                        return states.contains(MaterialState.disabled)
-                            ? null
-                            : (_isDark()
-                                ? colorScheme.onSurface
-                                : colorScheme.onPrimary);
-                      }),
-                      backgroundColor:
-                          MaterialStateProperty.resolveWith<Color?>(
-                              (Set<MaterialState> states) {
-                        return _isDark() ||
-                                states.contains(MaterialState.disabled)
-                            ? null
-                            : widget.steps[index].continueButtonBGColor != null
-                                ? widget.steps[index].continueButtonBGColor
-                                : ColorManager.primary;
-                      }),
-                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                          buttonPadding),
-                      shape: MaterialStateProperty.all<OutlinedBorder>(
-                          buttonShape),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            (widget.steps[index].continueButtonLabel != null)
-                                ? widget.steps[index].continueButtonLabel!
-                                : localizations.continueButtonLabel,
-                            style:
-                                Theme.of(context).textTheme.titleMedium?.copyWith(
-                                      color: ColorManager.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: FontSize.s14,
-                                    ),
+                      onPressed: widget.onStepContinue,
+                      style: ButtonStyle(
+                        foregroundColor:
+                            MaterialStateProperty.resolveWith<Color?>(
+                                (Set<MaterialState> states) {
+                          return states.contains(MaterialState.disabled)
+                              ? null
+                              : (_isDark()
+                                  ? colorScheme.onSurface
+                                  : colorScheme.onPrimary);
+                        }),
+                        backgroundColor:
+                            MaterialStateProperty.resolveWith<Color?>(
+                                (Set<MaterialState> states) {
+                          return _isDark() ||
+                                  states.contains(MaterialState.disabled)
+                              ? null
+                              : widget.steps[index].continueButtonBGColor != null
+                                  ? widget.steps[index].continueButtonBGColor
+                                  : ColorManager.primary;
+                        }),
+                        padding:
+                            MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                buttonPadding),
+                        shape: MaterialStateProperty.all<OutlinedBorder>(
+                            buttonShape),
+                        minimumSize: MaterialStateProperty.all<Size>(
+                            const Size(0, 48)),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              (widget.steps[index].continueButtonLabel != null)
+                                  ? widget.steps[index].continueButtonLabel!
+                                  : localizations.continueButtonLabel,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
+                                    color: ColorManager.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: FontSize.s14,
+                                  ),
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.visible,
+                            ),
                           ),
-                        ),
-                        widget.steps[index].continueIconWidget != null
-                            ? widget.steps[index].continueIconWidget!
-                            : Container(),
-                      ],
+                          if (widget.steps[index].continueIconWidget != null) ...[
+                            const SizedBox(width: 8),
+                            widget.steps[index].continueIconWidget!,
+                          ],
+                        ],
+                      ),
                     ),
-                  ))
-                : Container(),
+                  ),
+                )
+              : Container(),
             Container(
               margin: const EdgeInsetsDirectional.only(start: 8.0),
               child: TextButton(
                 onPressed: widget.onStepCancel,
                 style: TextButton.styleFrom(
-                  foregroundColor: cancelColor, padding: buttonPadding,
+                  foregroundColor: cancelColor,
+                  padding: buttonPadding,
                   shape: buttonShape,
                 ),
                 child: Text((widget.steps[index].cancelButtonLabel != null)
@@ -582,8 +597,7 @@ class _CustomStepperState extends State<CustomStepper>
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 
   TextStyle _titleStyle(int index) {

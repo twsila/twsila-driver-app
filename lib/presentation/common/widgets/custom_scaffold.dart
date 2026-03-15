@@ -165,7 +165,8 @@ class _CustomScaffoldState extends State<CustomScaffold> {
 
   PreferredSizeWidget _buildExtendedAppBar(BuildContext context) {
     final topPadding = MediaQuery.of(context).padding.top;
-    final toolbarHeight = 56.0;
+    final toolbarHeight =
+        widget.pageBuilder.preferredToolbarHeight ?? 56.0;
     final totalHeight = topPadding + toolbarHeight;
     final bgColor =
         widget.pageBuilder.appBarBackgroundColor ?? ColorManager.secondaryColor;
