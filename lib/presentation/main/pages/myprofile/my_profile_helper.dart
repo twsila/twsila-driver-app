@@ -9,7 +9,7 @@ import '../../../../app/di.dart';
 class MyProfileHelper {
   Future<void> changeAppLanguage(BuildContext context, String lang) async {
     final SharedPreferences _sharedPreferences = instance();
-    _sharedPreferences.setString(PREFS_KEY_LANG, lang);
+    _sharedPreferences.setString(PrefsKeys.lang, lang);
     // await Get.updateLocale(Locale(lang));
     Phoenix.rebirth(context);
   }
