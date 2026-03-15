@@ -54,8 +54,8 @@ class _CustomMapsWidgetState extends State<CustomMapsWidget> {
     var language = _appPrefs.getAppLanguage();
     geocoder = LocatitonGeocoder(
       Platform.isIOS
-          ? Constants.GOOGLE_API_KEY_IOS
-          : Constants.GOOGLE_API_KEY_ANDROID,
+          ? Constants.googleApiKeyIos
+          : Constants.googleApiKeyAndroid,
       lang: language,
     );
     super.initState();

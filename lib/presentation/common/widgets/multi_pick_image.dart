@@ -13,20 +13,18 @@ import 'package:taxi_for_you/utils/resources/styles_manager.dart';
 import '../../../app/constants.dart';
 import '../../../utils/dialogs/toast_handler.dart';
 import '../../../utils/resources/color_manager.dart';
-import '../../../utils/resources/values_manager.dart';
-import '../state_renderer/dialogs.dart';
 
 class MutliPickImageWidget extends StatefulWidget {
   final Function(List<XFile>? images) onPickedImages;
   final Function(XFile images)? onRemovedImage;
-  RegistrationRequest? registrationRequest;
-  List<XFile>? selectedBeforeImages;
+  final RegistrationRequest? registrationRequest;
+  final List<XFile>? selectedBeforeImages;
   final String titleText;
   final String btnText;
   final Widget btnIcon;
   final Color btnBackgroundColor;
-  bool addMultiplePhotos;
-  double? fontSize;
+  final bool addMultiplePhotos;
+  final double? fontSize;
 
   MutliPickImageWidget(this.onPickedImages, this.titleText, this.btnText,
       this.btnIcon, this.btnBackgroundColor, this.registrationRequest,
@@ -77,7 +75,7 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
                             widget.registrationRequest!.carImages != null &&
                             widget.registrationRequest!.carImages!.isNotEmpty &&
                             widget.registrationRequest!.carImages!.length >=
-                                Constants.MAXIMUM_MULTI_PIC_IMAGES) {
+                                Constants.maximumMultiPicImages) {
                           setState(() {
                             imagefiles.clear();
                             widget.registrationRequest!.carImages!.clear();
@@ -103,7 +101,7 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
                                 await FlutterImageCompress.compressAndGetFile(
                               filePath,
                               outPath,
-                              quality: Constants.IMAGE_QUALITY_COMPRESS,
+                              quality: Constants.imageQualityCompress,
                             );
 
                             if (result == null) return;
@@ -137,7 +135,7 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
                             widget.registrationRequest!.carImages != null &&
                             widget.registrationRequest!.carImages!.isNotEmpty &&
                             widget.registrationRequest!.carImages!.length >=
-                                Constants.MAXIMUM_MULTI_PIC_IMAGES) {
+                                Constants.maximumMultiPicImages) {
                           setState(() {
                             imagefiles.clear();
                             widget.registrationRequest!.carImages!.clear();
@@ -158,7 +156,7 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
                             await FlutterImageCompress.compressAndGetFile(
                           filePath,
                           outPath,
-                          quality: Constants.IMAGE_QUALITY_COMPRESS,
+                          quality: Constants.imageQualityCompress,
                         );
                         if (result == null) return;
                         imagefiles.add(result);
@@ -194,7 +192,7 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "* ${AppStrings.photo_limits_warning.tr()} ${Constants.MAXIMUM_MULTI_PIC_IMAGES} ${AppStrings.photos_lower.tr()}",
+            "* ${AppStrings.photo_limits_warning.tr()} ${Constants.maximumMultiPicImages} ${AppStrings.photos_lower.tr()}",
             style: getRegularStyle(
                 color: ColorManager.warningTextColor, fontSize: FontSize.s12),
           ),
