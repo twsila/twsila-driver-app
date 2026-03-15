@@ -244,7 +244,11 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
         displayLoadingIndicator: _displayLoadingIndicator,
         allowBackButtonInAppBar: false,
         appbarTitleWidget: Padding(
-          padding: const EdgeInsetsDirectional.only(start: 4, end: 4),
+          padding: const EdgeInsetsDirectional.only(
+            start: 4,
+            end: 4,
+            bottom: 16,
+          ),
           child: Align(
             alignment: AlignmentDirectional.centerStart,
             child: Column(
@@ -281,6 +285,7 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
         ),
         extendAppBarIntoSafeArea: true,
+        preferredToolbarHeight: 72,
         showLanguageChange: false,
         centerTitle: false,
         elevation: 0,

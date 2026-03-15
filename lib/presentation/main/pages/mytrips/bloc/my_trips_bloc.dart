@@ -30,8 +30,8 @@ class MyTripsBloc extends Bloc<MyTripsEvent, MyTripsState> {
     MyTripsUseCase myTripsUseCase = instance<MyTripsUseCase>();
     String endPoint = _appPreferences.getCachedDriver()?.captainType ==
             RegistrationConstants.captain
-        ? EndPoints.DriverMyTrips
-        : EndPoints.BusinessOwnerMyTrips;
+        ? EndPointsConstants.driverMyTrips
+        : EndPointsConstants.businessOwnerMyTrips;
     (await myTripsUseCase.execute(MyTripsInput(endPoint, event.tripTypeId,
             _appPreferences.getCachedDriver()?.id ?? -1)))
         .fold(

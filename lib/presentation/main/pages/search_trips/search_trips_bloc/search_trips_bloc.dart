@@ -87,8 +87,8 @@ class SearchTripsBloc extends Bloc<SearchTripsEvent, SearchTripsState> {
     TripsUseCase tripsUseCase = instance<TripsUseCase>();
     String endPoint = _appPreferences.getCachedDriver()?.captainType ==
             RegistrationConstants.captain
-        ? EndPoints.DriversTrips
-        : EndPoints.BusinessOwnerTrips;
+        ? EndPointsConstants.driversTrips
+        : EndPointsConstants.businessOwnerTrips;
     (await tripsUseCase.execute(TripsInput(
             endPoint,
             event.tripTypeId,
