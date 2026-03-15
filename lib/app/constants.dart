@@ -5,37 +5,36 @@ import '../domain/model/driver_model.dart';
 import '../domain/model/models.dart';
 
 class Constants {
-  // static const String baseUrl =
-  //     "https://twsila-dev-service-f33wiujt7a-lm.a.run.app";
   static const String empty = "";
   static const String token = "";
   static const int zero = 0;
   static const int apiTimeOut = 60000;
   static const int onChangeDebounceMilliseconds = 800;
-  static const String GOOGLE_API_KEY_ANDROID =
+  static const String googleApiKeyAndroid =
       "AIzaSyDudVHh73YAVrXD1CgiJPtIbFbquCmavlA";
-  static const String GOOGLE_API_KEY_IOS =
+  static const String googleApiKeyIos =
       "AIzaSyD8KjkW8eLaDD3qeZIiPPDxqfdK8olftWs";
-  static const String UPLOAD_DOCUMENTS_TYPE = "upload_documents_type";
+  static const String uploadDocumentsType = "upload_documents_type";
 
-  static const int IMAGE_QUALITY_COMPRESS = 25;
+  static const int imageQualityCompress = 25;
 
-  static const String DRIVER_PHOTO_IMAGE_STRING = 'driver_photo.jpg';
-
-  static const String BUSINESS_OWNER_PHOTO_IMAGE_STRING =
-      'business_owner_photo.jpg';
-  static const String BUSINESS_OWNER_PHOTO_DOCUMENT_SUBSTRING =
+  static const String businessOwnerPhotoImageString = 'business_owner_photo.jpg';
+  static const String businessOwnerPhotoDocumentSubstring =
       'business_owner_document_photo_';
 
   static const String dateFormatterString = "dd/MM/yyyy hh:mm:ss";
 
   static const int refreshCurrentLocationSeconds = 2;
   static const int refreshEstimatedTimeInSeconds = 5;
-  static const int MAXIMUM_MULTI_PIC_IMAGES = 4;
+  static const int maximumMultiPicImages = 4;
 
   static const int otpCountTime = 30;
   static const int otpSize = 6;
   static const bool showCursorOtpField = false;
+
+  static const String saudiArabiaIsoCode = 'SA';
+  static const String saudiArabiaPhoneCode = '+966';
+  static const int saudiArabiaMobileDigits = 9;
 
   static List<CountryCodes> countryList = [
     CountryCodes(ImageAssets.saudiFlag, AppStrings.saudiCountryCode, 'SA',
@@ -79,14 +78,55 @@ class UserTypeConstants {
 }
 
 class EndPointsConstants {
+  // Auth
   static const String loginPath = "/api/v1/auth/login";
   static const String refreshToken = "/api/v1/auth/refresh-token";
   static const String logoutPath = "/api/v1/auth/logout";
-  static const String registration = "/drivers/register";
-  static const String BoRegistration = "/bo/register";
+
+  // OTP
   static const String otpGenerate = "/otp/generate";
   static const String otpValidate = "/otp/validate";
 
+  // Registration
+  static const String registration = "/drivers/register";
+  static const String boRegistration = "/bo/register";
+  static const String forgotPassword = "/customers/forgotPassword";
+  static const String driverRegistrationStatus = "/drivers/registration-status";
+
+  // Driver profile & actions
+  static const String driverUpdateProfile = "/drivers/update-profile";
+  static const String driverAddOffer = "/drivers/offers/add";
+  static const String driverAcceptOffer = "/drivers/offers/accept";
+  static const String driverTripSummary = "/drivers/trip-summary";
+  static const String driverChangeTripStatus = "/drivers/trips/change-status";
+  static const String driverRatePassenger = "/drivers/trips/rate";
+  static const String searchDrivers = "/drivers/get-drivers";
+
+  // Business owner profile & actions
+  static const String boUpdateProfile = "/bo/update-profile";
+  static const String boGetMyDrivers = "/driver-acquisition/get-my-drivers";
+  static const String boGetPendingDrivers =
+      "/driver-acquisition/get-pending-drivers";
+  static const String boAddDriver = "/driver-acquisition/add-driver";
+  static const String boAssignDriver = "/driver-acquisition/assign-driver";
+  static const String boSuggestOffer = "/driver-acquisition/propose-offer";
+  static const String boAcceptOffer = "/driver-acquisition/accept-offer";
+  static const String driverAcquisitionRequests =
+      "/driver-acquisition/requests/{driverId}";
+  static const String driverAcquisitionAction =
+      "/driver-acquisition/driver-action";
+
+  // Trip endpoints (dynamic, used with {endpoint} path param)
+  static const String driversTrips = "/drivers/offers/select-trip";
+  static const String driverMyTrips = "/drivers/offers/select-my-trip";
+  static const String businessOwnerTrips = "/driver-acquisition/select-trip";
+  static const String businessOwnerMyTrips =
+      "/driver-acquisition/select-my-trip";
+
+  // Lookups
+  static const String lookups = "/lookups";
+  static const String countryLookup = "/lookups/country";
+  static const String lookupByKey = "/lookups/by-key";
   static const String goodsServiceTypes = "/drivers/service-types";
   static const String personsVehicleTypes = "/drivers/vehicle-types";
   static const String carModels = "/lookups/car-models";
@@ -96,9 +136,6 @@ class EndPointsConstants {
       "/lookups/car-manufacturers?vc=BUS";
   static const String carManufacturersBySEDAN =
       "/lookups/car-manufacturers?vc=SEDAN";
-  static const String lookups = "/lookups";
-  static const String countryLookup = "/lookups/country";
-  static const String lookupByKey = "/lookups/by-key";
   static const String allowedServicesLookupUT =
       "/lookups/allowed-endpoints?ut={userType}";
   static const String allowedServicesLookupDriver =
@@ -115,7 +152,7 @@ class EndPointsConstants {
     refreshToken,
     otpValidate,
     registration,
-    BoRegistration,
+    boRegistration,
     goodsServiceTypes,
     personsVehicleTypes,
     carModels,
@@ -161,10 +198,3 @@ class TripStatusConstants {
   static const String TRIP_CANCELLED = "TRIP_CANCELLED";
 }
 
-class EndPoints {
-  static const String DriversTrips = "/drivers/offers/select-trip";
-  static const String DriverMyTrips = "/drivers/offers/select-my-trip";
-  static const String BusinessOwnerTrips = "/driver-acquisition/select-trip";
-  static const String BusinessOwnerMyTrips =
-      "/driver-acquisition/select-my-trip";
-}

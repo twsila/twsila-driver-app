@@ -20,17 +20,18 @@ import '../utils/resources/assets_manager.dart';
 import '../utils/resources/langauge_manager.dart';
 import '../utils/resources/strings_manager.dart';
 
-const String PREFS_KEY_LANG = "PREFS_KEY_LANG";
-const String PREFS_KEY_ONBOARDING_SCREEN_VIEWED =
-    "PREFS_KEY_ONBOARDING_SCREEN_VIEWED";
-const String PREFS_KEY_IS_USER_LOGGED_IN = "PREFS_KEY_IS_USER_LOGGED_IN";
-const String USER_SELECTED_COUNTRY = "USER_SELECTED_COUNTRY";
-const String DRIVER_MODEL = "DRIVER_MODEL";
-const String COAST_CALCULATION_DATA = "COAST_CALCULATION_DATA";
-const String DRIVER_FCM_TOKEN = "DRIVER_FCM_TOKEN";
-const String USER_TYPE = "USER_TYPE";
-const String CURRENT_COUNTRY_CODE = "CURRENT_COUNTRY_CODE";
-const String ALLOWED_SERVICES_LIST_KEY = "ALLOWED_SERVICES_LIST_KEY";
+class PrefsKeys {
+  static const String lang = "PREFS_KEY_LANG";
+  static const String onboardingScreenViewed = "PREFS_KEY_ONBOARDING_SCREEN_VIEWED";
+  static const String isUserLoggedIn = "PREFS_KEY_IS_USER_LOGGED_IN";
+  static const String userSelectedCountry = "USER_SELECTED_COUNTRY";
+  static const String driverModel = "DRIVER_MODEL";
+  static const String coastCalculationData = "COAST_CALCULATION_DATA";
+  static const String driverFcmToken = "DRIVER_FCM_TOKEN";
+  static const String userType = "USER_TYPE";
+  static const String currentCountryCode = "CURRENT_COUNTRY_CODE";
+  static const String allowedServicesList = "ALLOWED_SERVICES_LIST_KEY";
+}
 
 class AppPreferences {
   final SharedPreferences _sharedPreferences;
@@ -39,11 +40,10 @@ class AppPreferences {
   AppPreferences(this._sharedPreferences);
 
   String getAppLanguage() {
-    String? language = _sharedPreferences.getString(PREFS_KEY_LANG);
+    String? language = _sharedPreferences.getString(PrefsKeys.lang);
     if (language != null && language.isNotEmpty) {
       return language;
     } else {
-      // return default lang
       return LanguageType.ARABIC.getValue();
     }
   }
@@ -52,19 +52,17 @@ class AppPreferences {
     return getAppLanguage() == LanguageType.ENGLISH.getValue();
   }
 
-  //set CoastCalculation Data
   Future<bool> setCoastCalculationData(
       CoastCalculationModel coastCalculation) async {
     String coastCalculationStr = json.encode(coastCalculation);
     await _sharedPreferences.setString(
-        COAST_CALCULATION_DATA, coastCalculationStr);
+        PrefsKeys.coastCalculationData, coastCalculationStr);
     return true;
   }
 
-  //get CoastCalculation Data
   Future<CoastCalculationModel> getCoastCalculationData() async {
-    var coastStr =
-        await jsonDecode(_sharedPreferences.getString(COAST_CALCULATION_DATA)!);
+    var coastStr = await jsonDecode(
+        _sharedPreferences.getString(PrefsKeys.coastCalculationData)!);
     return CoastCalculationModel.fromJson(coastStr);
   }
 
@@ -96,11 +94,10 @@ class AppPreferences {
     }
   }
 
-  //driver functionalities
   Future<bool> setDriver(DriverBaseModel driver) async {
     await setUserLoggedIn();
     String driverStr = json.encode(driver);
-    await _sharedPreferences.setString(DRIVER_MODEL, driverStr);
+    await _sharedPreferences.setString(PrefsKeys.driverModel, driverStr);
     return true;
   }
 
@@ -111,7 +108,7 @@ class AppPreferences {
         userType == RegistrationConstants.captain) {
       if ((driverBaseModel as Driver).images.isNotEmpty) {
         driverBaseModel.images.forEach((element) {
-          if (element.imageName == Constants.DRIVER_PHOTO_IMAGE_STRING) {
+          if (element.imageName == DriverImagesConstants.DRIVER_PHOTO_IMAGE_STRING) {
             imageUrl = element.imageUrl.toString();
           }
         });
@@ -126,7 +123,7 @@ class AppPreferences {
             driverBaseModel.imagesFromApi!.isNotEmpty) {
           driverBaseModel.imagesFromApi!.forEach((element) {
             if (element.imageName ==
-                Constants.BUSINESS_OWNER_PHOTO_IMAGE_STRING) {
+                Constants.businessOwnerPhotoImageString) {
               imageUrl = element.imageUrl.toString();
             }
           });
@@ -143,30 +140,28 @@ class AppPreferences {
     return imageUrl!;
   }
 
-  //Selected country
   setUserSelectedCountry(String country) {
-    _sharedPreferences.setString(USER_SELECTED_COUNTRY, country);
+    _sharedPreferences.setString(PrefsKeys.userSelectedCountry, country);
   }
 
   String? getUserSelectedCountry() {
-    return _sharedPreferences.getString(USER_SELECTED_COUNTRY);
+    return _sharedPreferences.getString(PrefsKeys.userSelectedCountry);
   }
 
   String? getUserType() {
-    return _sharedPreferences.getString(USER_TYPE);
+    return _sharedPreferences.getString(PrefsKeys.userType);
   }
 
   setUserType(String userType) {
-    return _sharedPreferences.setString(USER_TYPE, userType);
+    return _sharedPreferences.setString(PrefsKeys.userType, userType);
   }
 
-  //USER Firebase Token
   Future setFCMToken(String token) async {
-    await _sharedPreferences.setString(DRIVER_FCM_TOKEN, token);
+    await _sharedPreferences.setString(PrefsKeys.driverFcmToken, token);
   }
 
   Future<String?> getFCMToken() async {
-    return _sharedPreferences.getString(DRIVER_FCM_TOKEN);
+    return _sharedPreferences.getString(PrefsKeys.driverFcmToken);
   }
 
   setCountries(List<CountryLookupModel> countries) {
@@ -178,12 +173,12 @@ class AppPreferences {
         .map((AllowedServiceModel) => jsonEncode(AllowedServiceModel.toJson()))
         .toList();
     await _sharedPreferences.setStringList(
-        ALLOWED_SERVICES_LIST_KEY, servicesListJson);
+        PrefsKeys.allowedServicesList, servicesListJson);
   }
 
   Future<List<AllowedServiceModel>> getAllowedServicesList() async {
     List<String>? jsonStringList =
-        _sharedPreferences.getStringList(ALLOWED_SERVICES_LIST_KEY);
+        _sharedPreferences.getStringList(PrefsKeys.allowedServicesList);
 
     if (jsonStringList != null) {
       return await jsonStringList
@@ -223,9 +218,9 @@ class AppPreferences {
 
   DriverBaseModel? getCachedDriver() {
     Map<String, dynamic> driverMap = {};
-    if (_sharedPreferences.getString(DRIVER_MODEL) != null &&
-        _sharedPreferences.getString(DRIVER_MODEL) != "") {
-      driverMap = jsonDecode(_sharedPreferences.getString(DRIVER_MODEL)!);
+    if (_sharedPreferences.getString(PrefsKeys.driverModel) != null &&
+        _sharedPreferences.getString(PrefsKeys.driverModel) != "") {
+      driverMap = jsonDecode(_sharedPreferences.getString(PrefsKeys.driverModel)!);
       if (driverMap["userDevice"] != null) {
         driverMap["userDevice"] = UserDevice.fromJson(driverMap["userDevice"]);
       }
@@ -251,42 +246,38 @@ class AppPreferences {
   }
 
   bool? removeCachedDriver() {
-    _sharedPreferences.setString(DRIVER_MODEL, "");
+    _sharedPreferences.setString(PrefsKeys.driverModel, "");
     return true;
   }
 
-  // on boarding
-
   Future<void> setOnBoardingScreenViewed() async {
-    _sharedPreferences.setBool(PREFS_KEY_ONBOARDING_SCREEN_VIEWED, true);
+    _sharedPreferences.setBool(PrefsKeys.onboardingScreenViewed, true);
   }
 
   Future<bool> isOnBoardingScreenViewed() async {
-    return _sharedPreferences.getBool(PREFS_KEY_ONBOARDING_SCREEN_VIEWED) ??
+    return _sharedPreferences.getBool(PrefsKeys.onboardingScreenViewed) ??
         false;
   }
 
   Future<void> setOnboardingSeen(bool value) async {
-    _sharedPreferences.setBool(PREFS_KEY_ONBOARDING_SCREEN_VIEWED, value);
+    _sharedPreferences.setBool(PrefsKeys.onboardingScreenViewed, value);
   }
 
-  //login
-
   Future<void> setUserLoggedIn() async {
-    _sharedPreferences.setBool(PREFS_KEY_IS_USER_LOGGED_IN, true);
+    _sharedPreferences.setBool(PrefsKeys.isUserLoggedIn, true);
   }
 
   Future<void> setUserLoggedOut(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
-    _sharedPreferences.setBool(PREFS_KEY_IS_USER_LOGGED_IN, false);
+    _sharedPreferences.setBool(PrefsKeys.isUserLoggedIn, false);
     Phoenix.rebirth(context);
   }
 
   Future<bool> isUserLoggedIn() async {
-    return _sharedPreferences.getBool(PREFS_KEY_IS_USER_LOGGED_IN) ?? false;
+    return _sharedPreferences.getBool(PrefsKeys.isUserLoggedIn) ?? false;
   }
 
   Future<void> logout() async {
-    _sharedPreferences.remove(PREFS_KEY_IS_USER_LOGGED_IN);
+    _sharedPreferences.remove(PrefsKeys.isUserLoggedIn);
   }
 }
