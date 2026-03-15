@@ -294,7 +294,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         endPoint,
         tripTypeModuleId,
         userId,
-        endPoint == EndPoints.BusinessOwnerMyTrips
+        endPoint == EndPointsConstants.businessOwnerMyTrips
             ? FiltrationHelper().serviceTypesList.join(",")
             : null);
   }

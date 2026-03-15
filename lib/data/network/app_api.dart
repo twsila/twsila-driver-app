@@ -2,16 +2,12 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
-import 'package:taxi_for_you/domain/model/country_lookup_model.dart';
 import 'package:taxi_for_you/domain/model/general_response.dart';
 import 'package:taxi_for_you/domain/model/generate_otp_model.dart';
 import 'package:taxi_for_you/domain/model/lookups_model.dart';
 import 'package:taxi_for_you/domain/model/registration_response_model.dart';
-import 'package:taxi_for_you/domain/model/verify_otp_model.dart';
-import 'package:taxi_for_you/presentation/main/pages/search_trips/search_trips_bloc/search_trips_bloc.dart';
 
 import '../../app/constants.dart';
-import '../../domain/model/car_brand_models_model.dart';
 import '../../domain/model/logout_model.dart';
 import '../../domain/model/registration_services_response.dart';
 import '../../domain/model/service_status_model.dart';
@@ -28,14 +24,14 @@ abstract class AppServiceClient {
     return _AppServiceClient(dio, baseUrl: F.baseUrl);
   }
 
-  @GET("/lookups/country")
+  @GET(EndPointsConstants.countryLookup)
   Future<BaseResponse> getCountriesLookup();
 
-  @POST("/api/v1/auth/login")
+  @POST(EndPointsConstants.loginPath)
   Future<LoginResponse> login(@Field("login") String login,
       @Field("mobileUserDeviceDTO") Map<String, dynamic> userDeviceDTO);
 
-  @POST("/api/v1/auth/login")
+  @POST(EndPointsConstants.loginPath)
   Future<GeneralResponse> loginBO(@Field("login") String login,
       @Field("mobileUserDeviceDTO") Map<String, dynamic> userDeviceDTO);
 
@@ -61,7 +57,7 @@ abstract class AppServiceClient {
   Future<BaseResponse> carManufacturers(
       @Path("serviceType") String serviceType);
 
-  @POST("/customers/forgotPassword")
+  @POST(EndPointsConstants.forgotPassword)
   Future<ForgotPasswordResponse> forgotPassword(@Field("email") String email);
 
   @POST(EndPointsConstants.registration)
@@ -130,7 +126,7 @@ abstract class AppServiceClient {
       @Part(name: "driverImages") List<File> driverImages,
       @Part(name: "countryCode") String countryCode);
 
-  @POST(EndPointsConstants.BoRegistration)
+  @POST(EndPointsConstants.boRegistration)
   @MultiPart()
   Future<RegistrationBOResponse> registerBOWithService(
     @Part(name: "firstName") String firstName,
@@ -150,7 +146,7 @@ abstract class AppServiceClient {
     @Part(name: "businessEntityImages") List<File> images,
   );
 
-  @POST("/drivers/registration-status")
+  @POST(EndPointsConstants.driverRegistrationStatus)
   Future<ServiceRegisterModel> serviceStatus(@Field("userId") String userId);
 
   @POST("{endpoint}")
@@ -176,53 +172,53 @@ abstract class AppServiceClient {
     String? serviceTypesSelectedByBusinessOwner,
   );
 
-  @POST("/drivers/offers/add")
+  @POST(EndPointsConstants.driverAddOffer)
   Future<GeneralResponse> addOffer(
     @Field("userId") int userId,
     @Field("tripId") int tripId,
     @Field("driverOffer") double driverOffer,
   );
 
-  @PUT("/drivers/offers/accept")
+  @PUT(EndPointsConstants.driverAcceptOffer)
   Future<GeneralResponse> acceptOffer(
     @Field("userId") int userId,
     @Field("tripId") int tripId,
   );
 
-  @POST("/drivers/trip-summary")
+  @POST(EndPointsConstants.driverTripSummary)
   Future<GeneralResponse> tripSummary(
     @Field("userId") int userId,
     @Field("tripId") int tripId,
   );
 
-  @GET("/lookups")
+  @GET(EndPointsConstants.lookups)
   Future<LookupsModel> getLookups();
 
-  @POST("/api/v1/auth/logout")
+  @POST(EndPointsConstants.logoutPath)
   Future<LogoutModel> logout(
     @Field("refreshToken") String refreshToken,
   );
 
-  @POST("/api/v1/auth/logout")
+  @POST(EndPointsConstants.logoutPath)
   Future<LogoutModel> boLogout(
     @Field("refreshToken") String refreshToken,
   );
 
-  @POST("/drivers/trips/change-status")
+  @POST(EndPointsConstants.driverChangeTripStatus)
   Future<BaseResponse> changeTripStatus(
     @Field("userId") int userId,
     @Field("tripId") int tripId,
     @Field("tripStatus") String tripStatus,
   );
 
-  @POST("/drivers/trips/rate")
+  @POST(EndPointsConstants.driverRatePassenger)
   Future<BaseResponse> ratePassenger(
     @Field("userId") int driverId,
     @Field("tripId") int tripId,
     @Field("rating") double rateNumber,
   );
 
-  @POST("/drivers/update-profile")
+  @POST(EndPointsConstants.driverUpdateProfile)
   @MultiPart()
   Future<BaseResponse> updateDriverProfile(
     @Part(name: "id") int? driverId,
@@ -241,7 +237,7 @@ abstract class AppServiceClient {
     @Part(name: "driverImages") List<File>? driverImages,
   );
 
-  @POST("/bo/update-profile")
+  @POST(EndPointsConstants.boUpdateProfile)
   @MultiPart()
   Future<BaseResponse> updateBOProfile(
     @Part(name: "id") int? boId,
@@ -258,35 +254,35 @@ abstract class AppServiceClient {
     @Part(name: "businessEntityImages") List<File>? businessEntityImages,
   );
 
-  @POST("/driver-acquisition/get-my-drivers")
+  @POST(EndPointsConstants.boGetMyDrivers)
   Future<BaseResponse> getBODrivers(
     @Field("businessOwnerId") int businessOwnerId,
   );
 
-  @POST("/driver-acquisition/get-pending-drivers")
+  @POST(EndPointsConstants.boGetPendingDrivers)
   Future<BaseResponse> getBOPendingDrivers(
     @Field("businessOwnerId") int businessOwnerId,
   );
 
-  @POST("/drivers/get-drivers")
+  @POST(EndPointsConstants.searchDrivers)
   Future<BaseResponse> searchDriversByMobile(
     @Field("mobileNumber") int mobileNumber,
   );
 
-  @POST("/driver-acquisition/add-driver")
+  @POST(EndPointsConstants.boAddDriver)
   Future<BaseResponse> addDriverForBO(
     @Field("businessOwnerId") int businessOwnerId,
     @Field("driverIds") List<int> driverIds,
   );
 
-  @POST("/driver-acquisition/assign-driver")
+  @POST(EndPointsConstants.boAssignDriver)
   Future<BaseResponse> boAssignDriverToTrip(
     @Field("businessOwnerId") int businessOwnerId,
     @Field("driverId") int driverId,
     @Field("tripId") int tripId,
   );
 
-  @POST("/driver-acquisition/propose-offer")
+  @POST(EndPointsConstants.boSuggestOffer)
   Future<BaseResponse> boSuggestNewOffer(
     @Field("businessOwnerId") int businessOwnerId,
     @Field("tripId") int tripId,
@@ -294,7 +290,7 @@ abstract class AppServiceClient {
     @Field("driverId") int driverId,
   );
 
-  @POST("/driver-acquisition/accept-offer")
+  @POST(EndPointsConstants.boAcceptOffer)
   Future<BaseResponse> boAcceptNewOffer(
     @Field("businessOwnerId") int businessOwnerId,
     @Field("tripId") int tripId,
@@ -313,12 +309,12 @@ abstract class AppServiceClient {
     @Field("language") String language,
   );
 
-  @GET("/driver-acquisition/requests/{driverId}")
+  @GET(EndPointsConstants.driverAcquisitionRequests)
   Future<BaseResponse> getAddRequests(
     @Path("driverId") String driverId,
   );
 
-  @POST("/driver-acquisition/driver-action")
+  @POST(EndPointsConstants.driverAcquisitionAction)
   Future<BaseResponse> changeRequestStatus(
     @Field("acquisitionId") int acquisitionId,
     @Field("driverAcquisitionDecision") String driverAcquisitionDecision,
