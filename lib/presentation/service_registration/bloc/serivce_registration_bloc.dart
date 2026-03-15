@@ -336,7 +336,7 @@ class ServiceRegistrationBloc
 
     File boPhoto = await changeFileNameOnly(
         event.businessOwnerModel.profileImage!,
-        Constants.BUSINESS_OWNER_PHOTO_IMAGE_STRING);
+        Constants.businessOwnerPhotoImageString);
     List<File> documentPhotos =
         await prepareBoDocumentList(event.businessOwnerModel.images!);
     event.businessOwnerModel.images!.clear();
@@ -361,7 +361,7 @@ class ServiceRegistrationBloc
     await Future.forEach(boDocumentList, (File documentPhoto) async {
       File imageFile = await changeFileNameOnlyForBo(
           documentPhoto,
-          Constants.BUSINESS_OWNER_PHOTO_DOCUMENT_SUBSTRING +
+          Constants.businessOwnerPhotoDocumentSubstring +
               counter.toString() +
               '.jpg');
       counter++;
@@ -487,7 +487,7 @@ class ServiceRegistrationBloc
 
     if (renameFile)
       captainPhoto = await changeFileNameOnly(
-          event.captainPhoto, Constants.DRIVER_PHOTO_IMAGE_STRING);
+          event.captainPhoto, DriverImagesConstants.DRIVER_PHOTO_IMAGE_STRING);
     else
       captainPhoto = File(event.captainPhoto.path);
 
