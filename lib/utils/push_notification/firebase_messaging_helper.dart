@@ -57,7 +57,7 @@ class FirebaseMessagingHelper extends ChangeNotifier {
 
       if (message != null) {
         dynamic notification = message.data;
-        print(message);
+        debugPrint('[FCM] Initial message: ${message.messageId}');
         FirebaseMessagingHelper.navigateToNotifications(message);
       }
     });
@@ -88,7 +88,7 @@ class FirebaseMessagingHelper extends ChangeNotifier {
   static Future<void> navigateToNotifications(RemoteMessage message) async {
     await SharedPreferences.getInstance();
 
-    print(message);
+    debugPrint('[FCM] Navigate to notification: ${message.messageId}');
   }
 
   static Future<void> setFcmToken() async {
@@ -96,7 +96,7 @@ class FirebaseMessagingHelper extends ChangeNotifier {
       log("FCM token : $token");
       FirebaseMessagingHelper.appPreferences.setFCMToken(token!);
     }).onError((error, stackTrace) {
-      print("FCM token error: $error");
+      debugPrint('[FCM] Token error: $error');
     });
   }
 
@@ -108,7 +108,7 @@ class FirebaseMessagingHelper extends ChangeNotifier {
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print(message);
+  debugPrint('[FCM] Background message: ${message.messageId}');
   FirebaseMessagingHelper.notificationCounter.value += 1;
 }
 
