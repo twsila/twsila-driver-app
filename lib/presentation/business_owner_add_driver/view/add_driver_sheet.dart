@@ -167,7 +167,7 @@ class _AddDriverBottomSheetViewState extends State<AddDriverBottomSheetView> {
                                       selectedDriversToAddList
                                           .remove(selectedDriver!);
                                     }
-                                    print(selectedDriversToAddList.length);
+                                    debugPrint('[AddDriver] Selected drivers count: ${selectedDriversToAddList.length}');
                                   });
                                 },
                                 child: Container(
