@@ -57,7 +57,7 @@ class _VehicleShapeWidgetState extends State<VehicleShapeWidget> {
         }
       }
     } catch (e) {
-      print(e);
+      debugPrint('[VehicleShape] Error: $e');
     }
   }
 

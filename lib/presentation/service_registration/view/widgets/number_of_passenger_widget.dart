@@ -51,7 +51,7 @@ class _NumberOfPassengerWidgetState extends State<NumberOfPassengerWidget> {
         });
       }
     } catch (e) {
-      print(e);
+      debugPrint('[NumberOfPassenger] Error: $e');
     }
   }
 
