@@ -65,7 +65,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
 
   @override
   void initState() {
-    print(widget.tripModel);
+    debugPrint('[TripDetails] Loaded trip: ${widget.tripModel.id}');
     driverBaseModel = _appPreferences.getCachedDriver()!;
     super.initState();
   }
