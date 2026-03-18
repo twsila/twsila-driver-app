@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
 
@@ -324,7 +325,7 @@ class ServiceRegistrationBloc
       // content
       // emit success state
       // navigate to main screen
-      print(registrationRequest.vehicleTypeId);
+      debugPrint('[ServiceRegistration] Vehicle type id: ${registrationRequest.vehicleTypeId}');
       emit(ServiceRegistrationSuccess());
       // isUserLoggedInSuccessfullyStreamController.add(true);
     });
