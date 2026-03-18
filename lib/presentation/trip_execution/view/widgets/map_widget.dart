@@ -58,11 +58,7 @@ class _MapWidgetState extends State<MapWidget> {
     String? status = passedStatus ?? modelStatus;
 
     // Debug: Log what we received
-    print("🔍 [MAP MODE DEBUG]");
-    print("   Passed currentTripStatus: ${passedStatus ?? 'NULL'}");
-    print("   Model tripStatus: ${modelStatus ?? 'NULL'}");
-    print("   Using status: ${status ?? 'NULL'}");
-    print("   StepIndex: ${widget.currentStepIndex}");
+    debugPrint('[MapWidget] MAP MODE - status: ${status ?? "NULL"}, stepIndex: ${widget.currentStepIndex}');
 
     if (status == null || status.isEmpty) {
       print("⚠️ [MAP MODE] Status is null/empty, using step index");
