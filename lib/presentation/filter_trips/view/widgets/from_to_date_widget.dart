@@ -174,16 +174,14 @@ class _FromToDateWidgetState extends State<FromToDateWidget> {
                         if (todayDate) {
                           selectedFromDate = getDateOfNow(false);
                           selectedToDate = getDateOfNow(true);
-                          print(selectedFromDate);
-                          print(selectedFromDate);
+                          debugPrint('[FromToDate] Using today: from $selectedFromDate to $selectedToDate');
                         } else if ((dateFromPicker != null &&
                                 dateFromPicker!.isNotEmpty) &&
                             dateToPicker != null &&
                             dateToPicker!.isNotEmpty) {
                           selectedFromDate = dateFromPicker;
                           selectedToDate = dateToPicker;
-                          print(selectedFromDate);
-                          print(selectedFromDate);
+                          debugPrint('[FromToDate] Selected range: $selectedFromDate - $selectedToDate');
                         }
                       });
                     }),
