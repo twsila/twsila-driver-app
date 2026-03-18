@@ -74,7 +74,7 @@ class _SplashViewState extends State<SplashView> {
       await FirebaseMessagingHelper().configure(context);
     } catch (e) {
       // Log the error but don't block the app initialization
-      print('Firebase messaging configuration failed: $e');
+      debugPrint('[Splash] Firebase messaging configuration failed: $e');
     }
 
     // Initialize login module in case we need to refresh token
