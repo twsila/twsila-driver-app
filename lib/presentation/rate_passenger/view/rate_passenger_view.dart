@@ -39,7 +39,7 @@ class _RatePassengerViewState extends State<RatePassengerView> {
 
   @override
   void initState() {
-    print(widget.tripDetailsModel);
+    debugPrint('[RatePassenger] Trip details loaded');
     super.initState();
   }
 
@@ -197,7 +197,7 @@ class _RatePassengerViewState extends State<RatePassengerView> {
                   color: Colors.amber,
                 ),
                 onRatingUpdate: (rating) {
-                  print(rating);
+                  debugPrint('[RatePassenger] User rating: $rating');
                   this.rating = rating;
                 },
               ),
