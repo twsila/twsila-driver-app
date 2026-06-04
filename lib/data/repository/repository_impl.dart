@@ -404,6 +404,8 @@ class RepositoryImpl implements Repository {
               response.result!.map((x) => TripDetailsModel.fromJson(x)));
 
           await Future.forEach(trips, (TripDetailsModel trip) {
+            // TODO: replace with server-provided captain share / budget semantics
+            // so VAT/commission changes do not require duplicating formulas here.
             trip.tripDetails.clientOffer = CoastCalculationsHelper()
                 .getDriverShareFromAmount(
                     coastCalculationModel, trip.tripDetails.clientOffer!);
@@ -456,11 +458,12 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<Either<Failure, GeneralResponse>> acceptOffer(
-      int userId, int tripId) async {
+      int userId, int tripId, double driverOffer) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
-        final response = await _remoteDataSource.acceptOffer(userId, tripId);
+        final response =
+            await _remoteDataSource.acceptOffer(userId, tripId, driverOffer);
 
         if (response.success == ApiInternalStatus.SUCCESS) {
           return Right(response);
