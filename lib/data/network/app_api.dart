@@ -183,6 +183,7 @@ abstract class AppServiceClient {
   Future<GeneralResponse> acceptOffer(
     @Field("userId") int userId,
     @Field("tripId") int tripId,
+    @Field("driverOffer") double driverOffer,
   );
 
   @POST(EndPointsConstants.driverTripSummary)
