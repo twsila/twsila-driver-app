@@ -145,6 +145,13 @@ class EndPointsConstants {
   static const String coastCalculationLookupEndpoint =
       "/lookups/cost-calculations-config";
 
+  // Trip pricing breakdown (preview is no-persist; trip-final reads the snapshot)
+  static const String pricingPreviewPassenger =
+      "/api/v1/pricing/calculate/passenger-offer";
+  static const String pricingPreviewCaptain =
+      "/api/v1/pricing/calculate/captain-offer";
+  static const String pricingTripFinal = "/api/v1/pricing/trips";
+
   static const List<String> cancelTokenApis = [
     logoutPath,
     loginPath,
