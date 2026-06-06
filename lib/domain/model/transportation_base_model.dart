@@ -67,9 +67,13 @@ class TransportationBaseModel {
         : TransportationLocation.fromJson(json['destination'] is String
             ? jsonDecode(json['destination'])
             : json['destination']);
-    offers = json["offers"] != null
-        ? List<Offer>.from(json["offers"].map((x) => Offer.fromJson(x)))
-        : [];
+    if (json["offers"] != null) {
+      offers = (json["offers"] as List<dynamic>)
+          .map((m) => Offer.fromJson(m as Map<String, dynamic>))
+          .toList();
+    } else {
+      offers = [];
+    }
     if (json['acceptedOffer'] != null) {
       acceptedOffer = AcceptedOffer.fromJson(json['acceptedOffer']);
     }
