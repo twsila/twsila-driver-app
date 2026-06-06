@@ -71,7 +71,8 @@ abstract class Repository {
   Future<Either<Failure, List<TripDetailsModel>>> getMyTrips(
       String endPoint, String tripTypeModuleId, int userId);
 
-  Future<Either<Failure, GeneralResponse>> acceptOffer(int userId, int tripId);
+  Future<Either<Failure, GeneralResponse>> acceptOffer(
+      int userId, int tripId, double driverOffer);
 
   Future<Either<Failure, GeneralResponse>> addOffer(
       int userId, int tripId, double driverOffer);
