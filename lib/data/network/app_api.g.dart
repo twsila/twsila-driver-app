@@ -817,6 +817,7 @@ class _AppServiceClient implements AppServiceClient {
   Future<GeneralResponse> acceptOffer(
     userId,
     tripId,
+    driverOffer,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -824,6 +825,7 @@ class _AppServiceClient implements AppServiceClient {
     final _data = {
       'userId': userId,
       'tripId': tripId,
+      'driverOffer': driverOffer,
     };
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<GeneralResponse>(Options(
