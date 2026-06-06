@@ -6,7 +6,7 @@ import 'dart:convert';
 
 import 'package:taxi_for_you/utils/ext/enums.dart';
 import 'package:taxi_for_you/app/extensions.dart';
-
+import 'package:taxi_for_you/presentation/coast_calculation/pricing/model/offer_price_breakdown_model.dart';
 
 
 TripModel tripModelFromJson(String str) => TripModel.fromJson(json.decode(str));
@@ -212,6 +212,13 @@ class Offer {
   // final Driver driverModel; //will change to driverId
   final bool? woman;
 
+  // New optional pricing fields returned by the backend's offer DTO
+  // (`SelectTripOfferDto`). All are nullable so older payloads keep
+  // parsing without changes.
+  final String? offerSource;
+  final String? inputAmountType;
+  final OfferPriceBreakdownModel? priceBreakdown;
+
   Offer({
     required this.offerId,
     // required this.driverModel,
@@ -220,18 +227,40 @@ class Offer {
     required this.creationDate,
     required this.driverOffer,
     this.woman,
+    this.offerSource,
+    this.inputAmountType,
+    this.priceBreakdown,
   });
 
-  factory Offer.fromJson(Map<String, dynamic> json) => Offer(
-        offerId: json['id'],
-        // driverModel: Driver.fromJson(json['driver']),
-        acceptanceStatus: json['acceptanceStatus'],
-        creationDate: json['creationDate'] ?? "",
-        driverOffer: json['driverOffer'],
-        driverOfferFormatted:
-        (json['driverOffer'] as double).toCommaSeparated(decimalPlaces: 2),
-        woman: json['woman'],
-      );
+  factory Offer.fromJson(Map<String, dynamic> json) {
+    final rawOffer = json['driverOffer'];
+    final double offerVal = rawOffer is num
+        ? rawOffer.toDouble()
+        : double.tryParse('$rawOffer') ?? 0;
+    final pb = json['priceBreakdown'];
+    OfferPriceBreakdownModel? breakdownModel;
+    if (pb is Map<String, dynamic>) {
+      breakdownModel = OfferPriceBreakdownModel.fromJson(pb);
+    }
+    // Driver-facing copy (search trips, request details, execution): show what
+    // the captain asked to earn, not the passenger gross in `passengerTotal`.
+    final double captainDisplayForUi =
+        (breakdownModel != null && breakdownModel.captainNetAmount > 0)
+            ? breakdownModel.captainNetAmount
+            : offerVal;
+    return Offer(
+      offerId: json['id'],
+      acceptanceStatus: json['acceptanceStatus']?.toString() ?? '',
+      creationDate: json['creationDate']?.toString() ?? '',
+      driverOffer: offerVal,
+      driverOfferFormatted:
+          captainDisplayForUi.toCommaSeparated(decimalPlaces: 2),
+      woman: json['woman'] as bool?,
+      offerSource: json['offerSource']?.toString(),
+      inputAmountType: json['inputAmountType']?.toString(),
+      priceBreakdown: breakdownModel,
+    );
+  }
 }
 
 final tripTypesValues = EnumValues({
