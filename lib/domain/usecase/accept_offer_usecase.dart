@@ -17,13 +17,15 @@ class AcceptOfferUseCase
 
   @override
   Future<Either<Failure, GeneralResponse>> execute(AcceptOfferInput input) async {
-    return await _repository.acceptOffer(input.userId, input.tripId);
+    return await _repository.acceptOffer(
+        input.userId, input.tripId, input.driverOffer);
   }
 }
 
 class AcceptOfferInput {
   int userId;
   int tripId;
+  double driverOffer;
 
-  AcceptOfferInput(this.userId, this.tripId);
+  AcceptOfferInput(this.userId, this.tripId, this.driverOffer);
 }
