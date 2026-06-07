@@ -82,7 +82,7 @@ class _PersonsVehicleTypesWidgetState extends State<PersonsVehicleTypesWidget> {
         });
       }
     } catch (e) {
-      debugPrint('[PersonsVehicleShapes] Error: ${e.toString()}');
+      print(e.toString());
     }
   }
 
