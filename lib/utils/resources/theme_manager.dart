@@ -14,6 +14,7 @@ ThemeData getApplicationTheme() {
     primaryColorDark: ColorManager.darkPrimary,
     disabledColor: ColorManager.grey1,
     splashColor: ColorManager.lightPrimary,
+    dialogBackgroundColor: ColorManager.white,
     bottomSheetTheme: BottomSheetThemeData(surfaceTintColor: Colors.white),
 
     dialogTheme: DialogThemeData(
@@ -26,9 +27,10 @@ ThemeData getApplicationTheme() {
       elevation: AppSize.s4,
     ),
 
+    // app bar theme
     appBarTheme: AppBarTheme(
       centerTitle: true,
-      backgroundColor: ColorManager.primary,
+      color: ColorManager.primary,
       elevation: AppSize.s4,
       shadowColor: ColorManager.lightPrimary,
       titleTextStyle: getRegularStyle(
