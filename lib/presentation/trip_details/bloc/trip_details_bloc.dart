@@ -40,8 +40,8 @@ class TripDetailsBloc extends Bloc<TripDetailsEvent, TripDetailsState> {
     emit(TripDetailsLoading());
     AcceptOfferUseCase acceptOfferUseCase = instance<AcceptOfferUseCase>();
     if (event.captainType == RegistrationConstants.captain) {
-      (await acceptOfferUseCase
-              .execute(AcceptOfferInput(event.userId, event.tripId)))
+      (await acceptOfferUseCase.execute(AcceptOfferInput(
+              event.userId, event.tripId, event.driverOffer)))
           .fold((failure) => {
                 emit(TripDetailsFail(_getUserFriendlyErrorMessage(failure.message)))
               },
