@@ -7,9 +7,12 @@ class AcceptOffer extends TripDetailsEvent {
   final int userId;
   final int tripId;
   final String captainType;
+  /// Agreed amount (passenger total from coast sheet when accepting client offer).
+  final double driverOffer;
   int? driverId;
 
-  AcceptOffer(this.userId, this.tripId, this.captainType, {this.driverId});
+  AcceptOffer(this.userId, this.tripId, this.captainType, this.driverOffer,
+      {this.driverId});
 }
 
 class AddOffer extends TripDetailsEvent {
