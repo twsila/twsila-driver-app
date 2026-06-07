@@ -44,4 +44,27 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Android local/build artifacts (should never be committed)
+/android/.gradle/
+/android/local.properties
+/android/keystore.properties
+/android/key.properties
+**/android/**/GeneratedPluginRegistrant.java
+
+# iOS/Xcode generated files
+/ios/Pods/
+/ios/.symlinks/
+/ios/Flutter/Flutter.framework
+/ios/Flutter/Flutter.podspec
+/ios/Flutter/ephemeral/
+/ios/Runner.xcworkspace/xcuserdata/
+**/ios/**/xcuserdata/
+**/DerivedData/
+
+# Secrets & local env
+*.env
+.env.*
+!.env.example
+
 \.idea\.wiseGPT\
