@@ -688,6 +688,16 @@ class AppStrings {
   static const captainShareAmount = "captainShareAmount";
   static const allTripCalculatedAmount = "allTripCalculatedAmount";
 
+  // Trip pricing breakdown (live preview + accepted snapshot)
+  static const priceBreakdownTitle = "price_breakdown_title";
+  static const priceBreakdownSubtotal = "price_breakdown_subtotal";
+  static const priceBreakdownVat = "price_breakdown_vat";
+  static const priceBreakdownAppCommission = "price_breakdown_app_commission";
+  static const priceBreakdownCaptainNet = "price_breakdown_captain_net";
+  static const priceBreakdownTotal = "price_breakdown_total";
+  static const priceBreakdownError = "price_breakdown_error";
+  static const priceBreakdownLiveTitle = "price_breakdown_live_title";
+
   // Onboarding strings
   static const welcomeTo = "welcomeTo";
   static const appTitle = "appTitle";
