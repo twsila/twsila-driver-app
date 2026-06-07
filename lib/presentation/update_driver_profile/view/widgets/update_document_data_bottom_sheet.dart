@@ -111,7 +111,7 @@ class _UpdateDocumentDataBottomSheetState
                         });
                         imagesList = files;
                         setState(() {
-                          debugPrint('[UpdateDocument] Selected images count: ${imagesList!.length}');
+                          print(imagesList!.length);
                         });
                       }
                     },
