@@ -2,16 +2,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:taxi_for_you/domain/model/driver_model.dart';
 import 'package:taxi_for_you/presentation/business_owner_add_driver/view/assign_driver_sheet.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_network_image_widget.dart';
-import 'package:taxi_for_you/presentation/common/widgets/custom_text_input_field.dart';
 import 'package:taxi_for_you/presentation/google_maps/model/location_model.dart';
 import 'package:taxi_for_you/presentation/google_maps/view/google_maps_widget.dart';
 import 'package:taxi_for_you/presentation/trip_details/widgets/dotted_seperator.dart';
 import 'package:taxi_for_you/utils/dialogs/custom_dialog.dart';
-import 'package:taxi_for_you/utils/dialogs/toast_handler.dart';
 import 'package:taxi_for_you/utils/ext/date_ext.dart';
 import 'package:taxi_for_you/utils/resources/constants_manager.dart';
 
@@ -25,6 +22,7 @@ import '../../../utils/resources/font_manager.dart';
 import '../../../utils/resources/strings_manager.dart';
 import '../../../utils/resources/values_manager.dart';
 import '../../coast_calculation/view/coast_caclulation_bottom_sheet.dart';
+import 'widgets/send_captain_offer_sheet.dart';
 import '../../common/widgets/custom_bottom_sheet.dart';
 import '../../common/widgets/custom_scaffold.dart';
 import '../../common/widgets/custom_text_button.dart';
@@ -45,8 +43,6 @@ class _TripDetailsViewState extends State<TripDetailsView> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   final AppPreferences _appPreferences = instance<AppPreferences>();
   bool _displayLoadingIndicator = false;
-  bool _enableSendOffer = false;
-  double _driverOffer = 0.0;
   late DriverBaseModel driverBaseModel;
   bool showBusinessOwnerOfferActionsView = false;
   Driver? assignedDriverToTrip;
@@ -65,7 +61,8 @@ class _TripDetailsViewState extends State<TripDetailsView> {
 
   @override
   void initState() {
-    debugPrint('[TripDetails] Loaded trip: ${widget.tripModel.id}');
+    debugPrint(
+        '[TripDetails] Loaded trip: ${widget.tripModel.tripDetails.tripId}');
     driverBaseModel = _appPreferences.getCachedDriver()!;
     super.initState();
   }
@@ -121,70 +118,17 @@ class _TripDetailsViewState extends State<TripDetailsView> {
   void _showAnotherOfferBottomSheet() {
     CustomBottomSheet.heightWrappedBottomSheet(
       context: context,
+      showCloseButton: true,
+      margin: EdgeInsets.zero,
       items: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomTextInputField(
-                labelText: AppStrings.sendOfferWithPrice.tr(),
-                showLabelText: true,
-                suffixIcon: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    "${getCurrency(widget.tripModel.tripDetails.passenger?.countryCode ?? "")}",
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: ColorManager.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: FontSize.s16),
-                  ),
-                ),
-                keyboardType: TextInputType.number,
-                onChanged: (value) {
-                  if (value.isNotEmpty && double.parse(value) != 0.0) {
-                    _enableSendOffer = true;
-                    _driverOffer = double.parse(value);
-                  } else {
-                    _enableSendOffer = false;
-                  }
-                },
-              ),
-              CustomTextButton(
-                isWaitToEnable: false,
-                text: AppStrings.sendOffer.tr(),
-                onPressed: () {
-                  if (_enableSendOffer) {
-                    CustomDialog(context).showCupertinoDialog(
-                        AppStrings.confirmSendOffer.tr(),
-                        AppStrings.areYouSureToSendNewOffer.tr(),
-                        AppStrings.confirm.tr(),
-                        AppStrings.cancel.tr(),
-                        ColorManager.primary, () {
-                      BlocProvider.of<TripDetailsBloc>(context).add(AddOffer(
-                          _appPreferences.getCachedDriver()!.id!,
-                          widget.tripModel.tripDetails.tripId!,
-                          _driverOffer,
-                          _appPreferences
-                              .getCachedDriver()!
-                              .captainType
-                              .toString(),
-                          driverId: assignedDriverToTrip != null
-                              ? assignedDriverToTrip!.id
-                              : null));
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                    }, () {
-                      Navigator.pop(context);
-                    });
-                  } else {
-                    ToastHandler(context)
-                        .showToast('enter valid price', Toast.LENGTH_SHORT);
-                  }
-                },
-              )
-            ],
-          ),
+        SendCaptainOfferSheet(
+          tripDetailsBloc: BlocProvider.of<TripDetailsBloc>(context),
+          userId: _appPreferences.getCachedDriver()!.id!,
+          tripId: widget.tripModel.tripDetails.tripId!,
+          captainType: _appPreferences.getCachedDriver()!.captainType.toString(),
+          driverId: assignedDriverToTrip != null ? assignedDriverToTrip!.id : null,
+          currencySuffix:
+              getCurrency(widget.tripModel.tripDetails.passenger?.countryCode ?? ""),
         ),
       ],
     );
@@ -327,16 +271,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                 ? AppStrings.sendAnotherPrice.tr()
                 : AppStrings.enterRequiredPrice.tr(),
             onPressed: () {
-              CustomBottomSheet.displayModalBottomSheetList(
-                context: context,
-                showCloseButton: true,
-                initialChildSize: 0.9,
-                customWidget: CoastCalculationBottomSheetView(
-                  tripId: widget.tripModel.tripDetails.tripId!,
-                  assignedDriverToTrip: assignedDriverToTrip,
-                ),
-              );
-              // _showAnotherOfferBottomSheet();
+              _showAnotherOfferBottomSheet();
             },
           ),
         ],
@@ -461,15 +396,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                             ? AppStrings.sendAnotherPrice.tr()
                             : AppStrings.enterRequiredPrice.tr(),
                         onPressed: () {
-                          CustomBottomSheet.displayModalBottomSheetList(
-                            context: context,
-                            showCloseButton: true,
-                            initialChildSize: 0.9,
-                            customWidget: CoastCalculationBottomSheetView(
-                              tripId: widget.tripModel.tripDetails.tripId!,
-                            ),
-                          );
-                          // _showAnotherOfferBottomSheet();
+                          _showAnotherOfferBottomSheet();
                         },
                       ),
                     ],
@@ -527,15 +454,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                       ? AppStrings.sendAnotherPrice.tr()
                       : AppStrings.enterRequiredPrice.tr(),
                   onPressed: () {
-                    CustomBottomSheet.displayModalBottomSheetList(
-                      context: context,
-                      showCloseButton: true,
-                      initialChildSize: 0.9,
-                      customWidget: CoastCalculationBottomSheetView(
-                        tripId: widget.tripModel.tripDetails.tripId!,
-                      ),
-                    );
-                    // _showAnotherOfferBottomSheet();
+                    _showAnotherOfferBottomSheet();
                   },
                 ),
               ],
