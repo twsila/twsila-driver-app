@@ -92,7 +92,7 @@ class _GoodsServiceTypesWidgetState extends State<GoodsServiceTypesWidget> {
         });
       }
     } catch (e) {
-      debugPrint('[GoodsServiceTypes] Error: ${e.toString()}');
+      print(e.toString());
     }
   }
 
