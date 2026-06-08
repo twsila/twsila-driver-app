@@ -10,7 +10,7 @@ class F {
   static String get name => appFlavor?.name ?? '';
 
   static const String awsDevBaseUrl =
-      'http://127.0.0.1:8080/'; // local dev
+      'http://twsila-dev-lb-944400879.us-east-1.elb.amazonaws.com:8080/'; 
   static const String awsStagingBaseUrl =
       'http://twsila-dev-lb-944400879.us-east-1.elb.amazonaws.com:8080/';
 
