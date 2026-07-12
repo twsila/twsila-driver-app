@@ -40,6 +40,7 @@ import '../data/repository/repository_impl.dart';
 import '../domain/repository/repository.dart';
 import '../domain/usecase/countries_lookup_usecase.dart';
 import '../presentation/coast_calculation/pricing/model/pricing_repo.dart';
+import '../presentation/trip_history/model/trip_history_repo.dart';
 import '../domain/usecase/generate_otp_usecase.dart';
 import '../domain/usecase/goods_service_types_usecase.dart';
 import '../domain/usecase/login_usecase.dart';
@@ -96,6 +97,8 @@ Future<void> initAppModule() async {
   // a factory because it's only used inside the cost-calculation bottom sheet
   // and we don't want stale CancelTokens lingering on a singleton.
   instance.registerFactory<PricingRepo>(() => PricingRepo(instance<Dio>()));
+  instance.registerFactory<TripHistoryRepo>(
+      () => TripHistoryRepo(instance<Dio>()));
 }
 
 initSplashModule() {
