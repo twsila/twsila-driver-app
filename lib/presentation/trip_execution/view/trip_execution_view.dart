@@ -30,11 +30,11 @@ import '../../common/widgets/custom_scaffold.dart';
 import '../../common/widgets/page_builder.dart';
 import '../../google_maps/model/location_model.dart';
 import '../../google_maps/model/maps_repo.dart';
-import '../../rate_passenger/view/rate_passenger_view.dart';
 import '../../trip_details/view/more_details_widget/more_details_widget.dart';
 import '../bloc/trip_execution_bloc.dart';
 
 import 'navigation_tracking_view.dart';
+import 'trip_flow_popups.dart';
 
 class TripExecutionView extends StatefulWidget {
   TripDetailsModel tripModel;
@@ -58,6 +58,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
   TripStatusStepModel tripStatusStepModel =
       TripStatusStepModel(0, TripStatus.READY_FOR_TAKEOFF.name);
   String currentEstimatedTime = AppStrings.gettingEstimatedTime.tr();
+  bool _tripRatedAndCompleted = false;
 
   // REQUIRED: USED TO CONTROL THE STEPPER.
   int activeStep = 0; // Initial step set to 0.
@@ -81,6 +82,30 @@ class _TripExecutionViewState extends State<TripExecutionView> {
     setState(() {
       _displayLoadingIndicator = false;
     });
+  }
+
+  void _markTripAsCompleted() {
+    widget.tripModel.tripDetails.tripStatus = TripStatus.TRIP_COMPLETED.name;
+    tripStatusStepModel = TripStatusStepModel(
+      3,
+      TripStatus.TRIP_COMPLETED.name,
+    );
+    _tripRatedAndCompleted = true;
+    _timer.cancel();
+    setState(() {});
+  }
+
+  bool _isTripCompleted() {
+    return _tripRatedAndCompleted ||
+        widget.tripModel.tripDetails.tripStatus ==
+            TripStatus.TRIP_COMPLETED.name;
+  }
+
+  int get _stepperCurrentStep {
+    if (_isTripCompleted()) {
+      return 3;
+    }
+    return tripStatusStepModel.stepIndex.clamp(0, 3);
   }
 
   Future<void> getCurrentLocation() async {
@@ -177,14 +202,30 @@ class _TripExecutionViewState extends State<TripExecutionView> {
 
         if (state is TripStatusChangedSuccess) {
           if (state.isLastStep) {
-            Navigator.pushReplacementNamed(context, Routes.ratePassenger,
-                arguments: RatePassengerArguments(widget.tripModel));
+            TripFlowPopups.showRatePassenger(context, widget.tripModel)
+                .then((rated) {
+              if (rated == true && mounted) {
+                startLoading();
+                _markTripAsCompleted();
+                stopLoading();
+              }
+            });
           } else {
             this.tripStatusStepModel.stepIndex++;
           }
         }
         if (state is TripCurrentStepSuccess) {
-          this.tripStatusStepModel = state.tripStatusStepModel;
+          final step = state.tripStatusStepModel;
+          if (step.tripStatus == TripStatus.TRIP_COMPLETED.name ||
+              step.stepIndex >= 4) {
+            this.tripStatusStepModel = TripStatusStepModel(
+              3,
+              TripStatus.TRIP_COMPLETED.name,
+            );
+            _tripRatedAndCompleted = true;
+          } else {
+            this.tripStatusStepModel = step;
+          }
         }
       },
       builder: (context, state) {
@@ -205,6 +246,10 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                     _fromToWidget(),
                     const SizedBox(height: 20),
                     TripStepperWidget(tripStatusStepModel),
+                    if (_isTripCompleted()) ...[
+                      const SizedBox(height: 16),
+                      _buildTripCompletedBanner(context),
+                    ],
                     const SizedBox(height: 20),
                     TripDetailsWidget(),
                     const SizedBox(height: 20),
@@ -219,6 +264,41 @@ class _TripExecutionViewState extends State<TripExecutionView> {
           ],
         );
       },
+    );
+  }
+
+  Widget _buildTripCompletedBanner(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      decoration: BoxDecoration(
+        color: ColorManager.primary.withOpacity(0.12),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: ColorManager.primary.withOpacity(0.35),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            Icons.check_circle_rounded,
+            color: ColorManager.primary,
+            size: 24,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              AppStrings.tripHasBeenCompleted.tr(),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: ColorManager.primary,
+                    fontWeight: FontWeight.w700,
+                    fontSize: FontSize.s16,
+                  ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -590,7 +670,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                   : stepper.StepIndicatorAlignment.left,
           // dottedLine is set to false by default if not configured
           dottedLine: false,
-          currentStep: tripStatusStepModel.stepIndex,
+          currentStep: _stepperCurrentStep,
           onStepContinue: () {
             switch (tripStatusStepModel.stepIndex) {
               case 0:
@@ -772,10 +852,11 @@ class _TripExecutionViewState extends State<TripExecutionView> {
             stepper.CustomStep(
                 isActive: widget.tripModel.tripDetails.date != null
                     ? false
-                    : tripStatusStepModel.stepIndex == 3,
+                    : !_isTripCompleted() &&
+                        tripStatusStepModel.stepIndex == 3,
                 continueIconWidget: Image.asset(ImageAssets.tripFinishIc),
                 continueButtonBGColor: ColorManager.secondaryColor,
-                state: tripStatusStepModel.stepIndex > 3
+                state: _isTripCompleted() || tripStatusStepModel.stepIndex > 3
                     ? stepper.StepState.complete
                     : stepper.StepState.indexed,
                 title: Text(
@@ -799,15 +880,18 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                     ? Container()
                     : Container(
                         child: Text(
-                          tripStepperDisc(
-                              TripStatus.HEADING_TO_DESTINATION.name,
-                              driverServiceType.isNotEmpty
-                                  ? driverServiceType
-                                  : TripTypeConstants.personsType,
-                              _appPreferences
-                                  .getCachedDriver()!
-                                  .captainType
-                                  .toString()),
+                          widget.tripModel.tripDetails.tripStatus ==
+                                  TripStatus.TRIP_COMPLETED.name
+                              ? AppStrings.completed_disc.tr()
+                              : tripStepperDisc(
+                                  TripStatus.HEADING_TO_DESTINATION.name,
+                                  driverServiceType.isNotEmpty
+                                      ? driverServiceType
+                                      : TripTypeConstants.personsType,
+                                  _appPreferences
+                                      .getCachedDriver()!
+                                      .captainType
+                                      .toString()),
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium

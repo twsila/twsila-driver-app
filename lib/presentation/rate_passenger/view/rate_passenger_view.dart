@@ -23,8 +23,9 @@ import '../../common/widgets/page_builder.dart';
 
 class RatePassengerView extends StatefulWidget {
   TripDetailsModel tripDetailsModel;
+  final bool isPopup;
 
-  RatePassengerView({required this.tripDetailsModel});
+  RatePassengerView({required this.tripDetailsModel, this.isPopup = false});
 
   @override
   State<RatePassengerView> createState() => _RatePassengerViewState();
@@ -57,6 +58,10 @@ class _RatePassengerViewState extends State<RatePassengerView> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.isPopup) {
+      return _buildPopupShell(context);
+    }
+
     return CustomScaffold(
       pageBuilder: PageBuilder(
           appbar: true,
@@ -99,6 +104,69 @@ class _RatePassengerViewState extends State<RatePassengerView> {
     );
   }
 
+  Widget _buildPopupShell(BuildContext context) {
+    return ClipRRect(
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+      child: Material(
+        color: ColorManager.white,
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                _buildPopupHeader(context),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: _getContentWidget(context),
+                  ),
+                ),
+              ],
+            ),
+            if (_displayLoadingIndicator)
+              Container(
+                color: Colors.black26,
+                alignment: Alignment.center,
+                child: const CircularProgressIndicator(),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPopupHeader(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(8, 12, 16, 12),
+      decoration: BoxDecoration(
+        color: ColorManager.white,
+        border: Border(
+          bottom: BorderSide(color: ColorManager.borderColor.withOpacity(0.5)),
+        ),
+      ),
+      child: Row(
+        children: [
+          IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(Icons.close_rounded, size: 24),
+            color: ColorManager.headersTextColor,
+          ),
+          Expanded(
+            child: Text(
+              AppStrings.tripHasBeenCompleted.tr(),
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: ColorManager.headersTextColor,
+                    fontWeight: FontWeight.w700,
+                    fontSize: FontSize.s18,
+                  ),
+            ),
+          ),
+          const SizedBox(width: 48),
+        ],
+      ),
+    );
+  }
+
   Widget _getContentWidget(BuildContext context) {
     return BlocConsumer<RatePassengerBloc, RatePassengerState>(
       listener: (context, state) {
@@ -109,18 +177,25 @@ class _RatePassengerViewState extends State<RatePassengerView> {
         }
 
         if (state is RatePassengerSuccess) {
-          Navigator.pushReplacementNamed(context, Routes.mainRoute);
+          if (widget.isPopup) {
+            Navigator.pop(context, true);
+          } else {
+            Navigator.pushReplacementNamed(context, Routes.mainRoute);
+          }
         }
         if (state is RatePassengerFail) {
           CustomDialog(context).showErrorDialog("", "", state.errorMessage);
         }
       },
       builder: (context, state) {
-        return Center(
+        return Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: widget.isPopup ? AppPadding.p20 : 0,
+          ),
           child: Column(
             children: [
               SizedBox(
-                height: AppSize.s55,
+                height: widget.isPopup ? AppPadding.p24 : AppSize.s55,
               ),
               Image.asset(ImageAssets.ratePassengerGraphic),
               Text(
@@ -139,6 +214,7 @@ class _RatePassengerViewState extends State<RatePassengerView> {
               ),
               Text(
                 "${widget.tripDetailsModel.tripDetails.pickupLocation.locationName} - ${widget.tripDetailsModel.tripDetails.destinationLocation.locationName}",
+                textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: ColorManager.titlesTextColor,
                     fontWeight: FontWeight.bold,
@@ -197,11 +273,11 @@ class _RatePassengerViewState extends State<RatePassengerView> {
                   color: Colors.amber,
                 ),
                 onRatingUpdate: (rating) {
-                  print(rating);
                   this.rating = rating;
                 },
               ),
-              Spacer(),
+              SizedBox(height: widget.isPopup ? AppPadding.p24 : 0),
+              if (!widget.isPopup) Spacer(),
               CustomTextButton(
                 text: AppStrings.confirmAndFinish.tr(),
                 isWaitToEnable: false,
@@ -213,7 +289,8 @@ class _RatePassengerViewState extends State<RatePassengerView> {
                 },
                 backgroundColor: ColorManager.primary,
                 textColor: ColorManager.white,
-              )
+              ),
+              SizedBox(height: widget.isPopup ? AppPadding.p24 : 0),
             ],
           ),
         );
