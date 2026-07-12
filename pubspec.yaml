@@ -90,6 +90,10 @@ dependencies:
   path: ^1.8.2
   im_stepper: ^1.0.1+1
   url_launcher: ^6.1.11
+  path_provider: ^2.1.4
+  open_filex: ^4.5.0
+  share_plus: ^10.1.4
+  pdf: ^3.11.1
   location: ^6.0.0
   #  flutter_compass: ^0.6.0
   flutter_rating_bar: ^4.0.1
@@ -158,3 +162,8 @@ flutter:
         - asset: assets/fonts/english/Lato-Black.ttf
         - asset: assets/fonts/english/Lato-Light.ttf
         - asset: assets/fonts/english/Lato-Regular.ttf
+    - family: SaudiRiyal
+      fonts:
+        - asset: assets/fonts/saudi_riyal/saudi_riyal.ttf
+        - asset: assets/fonts/saudi_riyal/saudi_riyal_bold.ttf
+          weight: 700
