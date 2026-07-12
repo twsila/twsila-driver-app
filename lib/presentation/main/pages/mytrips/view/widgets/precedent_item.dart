@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_for_you/app/app_prefs.dart';
 import 'package:taxi_for_you/app/di.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
-import 'package:taxi_for_you/presentation/rate_passenger/view/rate_passenger_view.dart';
+import 'package:taxi_for_you/presentation/trip_execution/view/trip_flow_popups.dart';
 import 'package:taxi_for_you/utils/ext/date_ext.dart';
 import 'package:taxi_for_you/utils/resources/constants_manager.dart';
 
@@ -13,11 +13,9 @@ import '../../../../../../utils/ext/enums.dart';
 import '../../../../../../utils/resources/assets_manager.dart';
 import '../../../../../../utils/resources/color_manager.dart';
 import '../../../../../../utils/resources/font_manager.dart';
-import '../../../../../../utils/resources/routes_manager.dart';
 import '../../../../../../utils/resources/strings_manager.dart';
 import '../../../../../../utils/resources/values_manager.dart';
 import '../../../../../common/widgets/custom_card.dart';
-import '../../../../../trip_execution/view/trip_execution_view.dart';
 import '../../bloc/my_trips_bloc.dart';
 
 class PrecedentItemView extends StatefulWidget {
@@ -205,8 +203,7 @@ class _PrecedentItemViewState extends State<PrecedentItemView> {
                 text: AppStrings.ratePassenger.tr(),
                 isWaitToEnable: false,
                 onPressed: () {
-                  Navigator.pushNamed(context, Routes.ratePassenger,
-                      arguments: RatePassengerArguments(widget.trip));
+                  TripFlowPopups.showRatePassenger(context, widget.trip);
                 },
                 margin: 0,
                 backgroundColor: ColorManager.splashBGColor,
