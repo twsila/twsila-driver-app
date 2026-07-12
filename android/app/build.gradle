@@ -36,7 +36,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace "com.twsila.driver.app"
+    namespace "com.twsila.driver.apps"
 
     ndkVersion = "25.1.8937393"
 
@@ -46,17 +46,17 @@ android {
     productFlavors {
         development {
             dimension "flavor-type"
-            applicationId "com.twsila.driver.app"
+            applicationId "com.twsila.driver.apps"
             resValue "string", "app_name", "D-Captain - Business owner"
         }
         staging {
             dimension "flavor-type"
-            applicationId "com.twsila.driver.app"
+            applicationId "com.twsila.driver.apps"
             resValue "string", "app_name", "S-Captain - Business owner"
         }
         production {
             dimension "flavor-type"
-            applicationId "com.twsila.driver.app"
+            applicationId "com.twsila.driver.apps"
             resValue "string", "app_name", "Captain - Business owner"
         }
     }
@@ -85,7 +85,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.twsila.driver.app"
+        applicationId "com.twsila.driver.apps"
         minSdkVersion flutter.minSdkVersion
         targetSdk 35
         versionCode flutterVersionCode.toInteger()

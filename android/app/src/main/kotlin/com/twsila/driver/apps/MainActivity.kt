@@ -1,4 +1,4 @@
-package com.twsila.driver.app
+package com.twsila.driver.apps
 
 import io.flutter.embedding.android.FlutterActivity
 
