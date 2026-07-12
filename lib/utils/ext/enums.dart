@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:taxi_for_you/utils/currency_display.dart';
 import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
 import 'package:taxi_for_you/utils/resources/constants_manager.dart';
@@ -122,7 +123,7 @@ String getServiceTypeName(String tripType) {
 String getCurrency(String countryCode) {
   switch (countryCode) {
     case "SA":
-      return AppStrings.ryalSuadi.tr();
+      return CurrencyDisplay.sarSymbol;
     case "EG":
       return AppStrings.gnehMasry.tr();
     default:
