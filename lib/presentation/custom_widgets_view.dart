@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_input_field.dart';
-import 'package:taxi_for_you/utils/resources/values_manager.dart';
 
 import '../utils/resources/color_manager.dart';
-import 'common/widgets/CustomAutoFullSms.dart';
-import 'login/view/widgets/phone_view.dart';
 
 class CustomWidgetsView extends StatefulWidget {
   const CustomWidgetsView({Key? key}) : super(key: key);
@@ -25,13 +22,13 @@ class _CustomWidgetsViewState extends State<CustomWidgetsView> {
             children: [
               CustomTextButton(
                 text: 'متابعة',
-                icon: Icon(
+                icon: const Icon(
                   Icons.arrow_forward,
                   color: ColorManager.white,
                 ),
                 onPressed: () {},
               ),
-              // CustomVerificationCodeWidget(onComplete: (otp) {}, controller: null,),
+            
               CustomTextInputField(
                 showLabelText: true,
                 istitleBold: false,
