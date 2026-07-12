@@ -703,4 +703,17 @@ class AppStrings {
   static const appTitle = "appTitle";
   static const appPurpose = "appPurpose";
   static const appAvailableLocations = "appAvailableLocations";
+
+  // Trip history & invoices
+  static const tripHistory = "trip_history";
+  static const tripHistoryEmpty = "trip_history_empty";
+  static const viewInvoice = "view_invoice";
+  static const invoice = "invoice";
+  static const downloadInvoice = "download_invoice";
+  static const invoicePdfSaved = "invoice_pdf_saved";
+  static const filterAll = "filter_all";
+  static const filterLast7Days = "filter_last_7_days";
+  static const filterLast30Days = "filter_last_30_days";
+  static const filterCustomRange = "filter_custom_range";
+  static const tripNumber = "trip_number";
 }
