@@ -8,9 +8,9 @@ class F {
   static Flavor? appFlavor;
 
   /// Local Spring Boot (`profile=local`). Use LAN IP for a physical device on Wi‑Fi.
-  static const String localBaseUrl = 'http://127.0.0.1:8080/';
+  static const String localBaseUrl = 'http://twsila-dev-lb-944400879.us-east-1.elb.amazonaws.com:8080/';
   /// Example: same Mac, physical phone on Wi‑Fi — replace with your machine IP.
-  static const String localLanBaseUrl = 'http://192.168.1.2:8080/';
+  static const String localLanBaseUrl = 'http://twsila-dev-lb-944400879.us-east-1.elb.amazonaws.com:8080/';
 
   static String get name => appFlavor?.name ?? '';
 
