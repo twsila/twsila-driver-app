@@ -152,6 +152,10 @@ class EndPointsConstants {
       "/api/v1/pricing/calculate/captain-offer";
   static const String pricingTripFinal = "/api/v1/pricing/trips";
 
+  // Trip history & invoices
+  static const String driverTripHistory = "/drivers/trips/history";
+  static const String captainInvoice = "/api/v1/invoices/captain/trips";
+
   static const List<String> cancelTokenApis = [
     logoutPath,
     loginPath,
