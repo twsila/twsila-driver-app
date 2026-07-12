@@ -275,6 +275,11 @@ class _MyProfilePageState extends State<MyProfilePage> {
           onTap: () => Navigator.pushNamed(context, Routes.driverRequests),
         ),
       _MenuItem(
+        icon: ImageAssets.myTripsInactiveIcon,
+        label: AppStrings.tripHistory.tr(),
+        onTap: () => Navigator.pushNamed(context, Routes.tripHistory),
+      ),
+      _MenuItem(
         icon: ImageAssets.languageIc,
         label: AppStrings.language.tr(),
         onTap: () => _showBottomSheet(),
