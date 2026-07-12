@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:taxi_for_you/utils/currency_display.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
 import 'package:taxi_for_you/utils/resources/font_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
@@ -70,7 +71,7 @@ class PriceBreakdownWidget extends StatelessWidget {
     final b = breakdown;
     if (b == null) return const SizedBox.shrink();
 
-    final currency = (displayCurrencyOverride?.isNotEmpty ?? false)
+    final currencyCode = (displayCurrencyOverride?.isNotEmpty ?? false)
         ? displayCurrencyOverride!
         : b.currencyCode;
 
@@ -90,20 +91,24 @@ class PriceBreakdownWidget extends StatelessWidget {
                 ),
               ),
             ),
-          _row(AppStrings.priceBreakdownSubtotal.tr(), b.subtotalBeforeVat, currency),
-          _row(AppStrings.priceBreakdownVat.tr(), b.vatAmount, currency),
-          // _row(AppStrings.priceBreakdownAppCommission.tr(), b.appCommissionAmount, currency),
+          _row(
+            AppStrings.priceBreakdownSubtotal.tr(),
+            b.subtotalBeforeVat,
+            currencyCode,
+          ),
+          _row(AppStrings.priceBreakdownVat.tr(), b.vatAmount, currencyCode),
+          // _row(AppStrings.priceBreakdownAppCommission.tr(), b.appCommissionAmount, currencyCode),
           const Divider(height: 14, thickness: 0.6),
           // _row(
           //   AppStrings.priceBreakdownCaptainNet.tr(),
           //   b.captainNetAmount,
-          //   currency,
+          //   currencyCode,
           //   emphasize: emphasizeCaptainNet,
           // ),
           _row(
             AppStrings.priceBreakdownTotal.tr(),
             b.passengerTotal,
-            currency,
+            currencyCode,
             emphasize: true,
           ),
         ],
@@ -111,7 +116,12 @@ class PriceBreakdownWidget extends StatelessWidget {
     );
   }
 
-  Widget _row(String label, double value, String currency, {bool emphasize = false}) {
+  Widget _row(
+    String label,
+    double value,
+    String currencyCode, {
+    bool emphasize = false,
+  }) {
     final labelStyle = emphasize
         ? getBoldStyle(color: ColorManager.blackTextColor, fontSize: FontSize.s14)
         : getMediumStyle(color: ColorManager.blackTextColor, fontSize: FontSize.s12);
@@ -123,7 +133,11 @@ class PriceBreakdownWidget extends StatelessWidget {
       child: Row(
         children: [
           Expanded(child: Text(label, style: labelStyle)),
-          Text('${value.toStringAsFixed(2)} $currency', style: valueStyle),
+          CurrencyDisplay.amountText(
+            value,
+            currencyCode: currencyCode,
+            style: valueStyle,
+          ),
         ],
       ),
     );
