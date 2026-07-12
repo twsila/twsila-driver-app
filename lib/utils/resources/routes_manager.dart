@@ -33,6 +33,7 @@ import '../../presentation/service_registration/view/pages/no_service_added_view
 import '../../presentation/splash/splash_view.dart';
 import '../../presentation/trip_execution/view/navigation_tracking_view.dart';
 import '../../presentation/trip_execution/view/trip_execution_view.dart';
+import '../../presentation/trip_history/view/trip_history_view.dart';
 
 class Routes {
   static const String splashRoute = "/";
@@ -81,6 +82,7 @@ class Routes {
   static const String driverRequests = "/driverRequests";
   static const String paymentScreen = "/paymentScreen";
   static const String boSubscriptionBenefits = "/boSubscriptionBenefits";
+  static const String tripHistory = "/tripHistory";
 }
 
 class RouteGenerator {
@@ -222,6 +224,8 @@ class RouteGenerator {
       case Routes.boSubscriptionBenefits:
         return MaterialPageRoute(
             builder: (_) => const BoSubscriptionBenefits());
+      case Routes.tripHistory:
+        return MaterialPageRoute(builder: (_) => const TripHistoryView());
       case Routes.locationTrackingPage:
         final args = settings.arguments as NavigationTrackingArguments;
         return MaterialPageRoute(
