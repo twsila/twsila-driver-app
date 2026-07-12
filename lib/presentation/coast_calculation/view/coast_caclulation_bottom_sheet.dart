@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:taxi_for_you/app/extensions.dart';
+import 'package:taxi_for_you/utils/currency_display.dart';
 import 'package:taxi_for_you/utils/resources/font_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 
@@ -216,7 +217,7 @@ class _CoastCalculationBottomSheetViewState
                     amount: _livePreviewAmount,
                     mode: PricingPreviewMode.captainNet,
                     currencyCode: 'SAR',
-                    displayCurrencyOverride: AppStrings.sarCurrency.tr(),
+                    displayCurrencyOverride: CurrencyDisplay.sarSymbol,
                     emphasizeCaptainNet: true,
                     padding: const EdgeInsets.only(top: 12.0),
                   ),
