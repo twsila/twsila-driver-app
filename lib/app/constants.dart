@@ -155,6 +155,7 @@ class EndPointsConstants {
   // Trip history & invoices
   static const String driverTripHistory = "/drivers/trips/history";
   static const String captainInvoice = "/api/v1/invoices/captain/trips";
+  static const String driverDeleteAccount = "/drivers/delete-account";
 
   static const List<String> cancelTokenApis = [
     logoutPath,
