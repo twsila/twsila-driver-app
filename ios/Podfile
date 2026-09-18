@@ -42,9 +42,32 @@ post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
 
-    # Allow non-modular includes for certain pods (e.g., Firebase headers inside plugin modules)
     target.build_configurations.each do |config|
       config.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
+    end
+  end
+
+  # rive_native (pulled in by awesome_dialog) ships prebuilt static libs that must be
+  # force-loaded when linking Runner; pod_target_xcconfig alone does not propagate them.
+  rive_bin = '${PODS_ROOT}/../.symlinks/plugins/rive_native/native/build/iphoneos/bin'
+  rive_device_ldflags = '-Wl,-force_load,$(PODS_ROOT)/../.symlinks/plugins/rive_native/native/build/iphoneos/bin/release/librive_native.a -lrive -lrive_pls_renderer -lrive_yoga -lrive_harfbuzz -lrive_sheenbidi -lrive_decoders -llibpng -lzlib -llibjpeg -llibwebp -lminiaudio -lluau_vm -lluau_compiler -lluau_analyzer -lrive_scripting_workspace -lspirv_cross -lbrotli'
+  rive_sim_ldflags = '-Wl,-force_load,$(PODS_ROOT)/../.symlinks/plugins/rive_native/native/build/iphoneos/bin/emulator/librive_native.a -lrive -lrive_pls_renderer -lrive_yoga -lrive_harfbuzz -lrive_sheenbidi -lrive_decoders -llibpng -lzlib -llibjpeg -llibwebp -lminiaudio -lluau_vm -lluau_compiler -lluau_analyzer -lrive_scripting_workspace -lspirv_cross -lbrotli'
+
+  installer.aggregate_targets.each do |aggregate_target|
+    aggregate_target.xcconfigs.each do |config_name, _config_file|
+      xcconfig_path = aggregate_target.xcconfig_path(config_name)
+      xcconfig = File.read(xcconfig_path)
+      next if xcconfig.include?('force_load') && xcconfig.include?('librive_native.a')
+
+      File.open(xcconfig_path, 'a') do |file|
+        file.puts ''
+        file.puts '// Rive Native: link prebuilt C++ libraries (transitive via awesome_dialog)'
+        file.puts "LIBRARY_SEARCH_PATHS[sdk=iphoneos*] = $(inherited) \"#{rive_bin}/release\""
+        file.puts "LIBRARY_SEARCH_PATHS[sdk=iphonesimulator*] = $(inherited) \"#{rive_bin}/emulator\""
+        file.puts "OTHER_LDFLAGS[sdk=iphoneos*] = $(inherited) #{rive_device_ldflags}"
+        file.puts "OTHER_LDFLAGS[sdk=iphonesimulator*] = $(inherited) #{rive_sim_ldflags}"
+      end
     end
   end
 end
