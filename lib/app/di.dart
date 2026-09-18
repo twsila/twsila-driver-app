@@ -41,6 +41,7 @@ import '../domain/repository/repository.dart';
 import '../domain/usecase/countries_lookup_usecase.dart';
 import '../presentation/coast_calculation/pricing/model/pricing_repo.dart';
 import '../presentation/trip_history/model/trip_history_repo.dart';
+import '../presentation/main/pages/myprofile/model/account_deletion_repo.dart';
 import '../domain/usecase/generate_otp_usecase.dart';
 import '../domain/usecase/goods_service_types_usecase.dart';
 import '../domain/usecase/login_usecase.dart';
@@ -99,6 +100,8 @@ Future<void> initAppModule() async {
   instance.registerFactory<PricingRepo>(() => PricingRepo(instance<Dio>()));
   instance.registerFactory<TripHistoryRepo>(
       () => TripHistoryRepo(instance<Dio>()));
+  instance.registerFactory<AccountDeletionRepo>(
+      () => AccountDeletionRepo(instance<Dio>()));
 }
 
 initSplashModule() {
