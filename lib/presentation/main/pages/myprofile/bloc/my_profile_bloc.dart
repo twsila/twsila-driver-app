@@ -8,6 +8,7 @@ import 'package:taxi_for_you/domain/usecase/logout_usecase.dart';
 import '../../../../../app/app_prefs.dart';
 import '../../../../../app/di.dart';
 import '../../../../../utils/resources/constants_manager.dart';
+import '../model/account_deletion_repo.dart';
 
 part 'my_profile_event.dart';
 
@@ -70,30 +71,34 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileState> {
   FutureOr<void> _makeDeleteAccount(
       deleteAccountEvent event, Emitter<MyProfileState> emit) async {
     emit(MyProfileLoading());
-    
-    // Fake API call - wait 4 seconds
-    await Future.delayed(Duration(seconds: 4));
-    
-    // After fake API call, perform logout
+
+    final driver = _appPreferences.getCachedDriver();
+    final userId = driver?.id;
+    if (userId == null) {
+      emit(MyProfileFail('Unable to delete account. Please log in again.'));
+      return;
+    }
+
+    try {
+      await instance<AccountDeletionRepo>()
+          .deleteDriverAccount(userId: userId);
+    } catch (e) {
+      emit(MyProfileFail(e.toString().replaceFirst('Exception: ', '')));
+      return;
+    }
+
     LogoutUseCase logoutUseCase = instance<LogoutUseCase>();
     BoLogoutUseCase boLogoutUseCase = instance<BoLogoutUseCase>();
-    
-    // Try to logout on backend, but always logout locally regardless of result
-    // This ensures logout always succeeds even if backend call fails
+
     if (_appPreferences.getCachedDriver()!.captainType ==
         RegistrationConstants.captain) {
       (await logoutUseCase.execute(LogoutUseCaseInput(
               _appPreferences.getCachedDriver()!.refreshToken!)))
-          .fold(
-              (failure) async {
-                    // left -> failure
-                    // Even if backend logout fails (e.g., token not found, expired, etc.),
-                    // we should still log out locally to ensure user can always logout
-                    _appPreferences.removeCachedDriver();
-                    _appPreferences.setUserLoggedOut(event.context);
-                    emit(LoggedOutSuccessfully());
-                  }, (logoutModel) async {
-        // right -> data (success)
+          .fold((failure) async {
+        _appPreferences.removeCachedDriver();
+        _appPreferences.setUserLoggedOut(event.context);
+        emit(LoggedOutSuccessfully());
+      }, (logoutModel) async {
         _appPreferences.removeCachedDriver();
         _appPreferences.setUserLoggedOut(event.context);
         emit(LoggedOutSuccessfully());
@@ -101,16 +106,11 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileState> {
     } else {
       (await boLogoutUseCase.execute(BoLogoutUseCaseInput(
               _appPreferences.getCachedDriver()!.refreshToken!)))
-          .fold(
-              (failure) async {
-                    // left -> failure
-                    // Even if backend logout fails (e.g., token not found, expired, etc.),
-                    // we should still log out locally to ensure user can always logout
-                    _appPreferences.removeCachedDriver();
-                    _appPreferences.setUserLoggedOut(event.context);
-                    emit(LoggedOutSuccessfully());
-                  }, (logoutModel) async {
-        // right -> data (success)
+          .fold((failure) async {
+        _appPreferences.removeCachedDriver();
+        _appPreferences.setUserLoggedOut(event.context);
+        emit(LoggedOutSuccessfully());
+      }, (logoutModel) async {
         _appPreferences.removeCachedDriver();
         _appPreferences.setUserLoggedOut(event.context);
         emit(LoggedOutSuccessfully());
