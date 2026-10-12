@@ -24,7 +24,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 #flutter build apk --flavor development -t lib/main_production.dart --release
 #flutter build apk --flavor development -t lib/main_staging.dart --release
 #flutter run --flavor development -t lib/main_development.dart
-version: 1.0.12+10
+version: 1.1.0+11
 
 environment:
   sdk: ">=2.16.2 <3.0.0"

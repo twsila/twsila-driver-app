@@ -26,7 +26,7 @@ class PaymentScreen extends StatefulWidget {
 class _PaymentScreenState extends State<PaymentScreen> {
   final AppPreferences appPreferences = instance();
   PaymentConfig paymentConfig = PaymentConfig(
-      publishableApiKey: PaymentConstants.PRODUCTION_KEY,
+      publishableApiKey: PaymentConstants.TESTING_KEY,
       amount: 200 * 100,
       description: 'order #1324',
       metadata: {'size': '250g'});
