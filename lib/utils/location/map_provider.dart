@@ -26,7 +26,8 @@ class MapProvider with ChangeNotifier {
   //PolyLines
   Map<PolylineId, Polyline> polylines = {};
   List<LatLng> polylineCoordinates = [];
-  PolylinePoints polylinePoints = PolylinePoints();
+  PolylinePoints polylinePoints = PolylinePoints.legacy(
+      Platform.isIOS ? Constants.googleApiKeyIos : Constants.googleApiKeyAndroid);
 
   //Handle Markers
   addMarker(Marker marker) {
@@ -116,9 +117,6 @@ class MapProvider with ChangeNotifier {
         destinationLocation == null) return;
     resetPolyPoints();
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-        googleApiKey: Platform.isIOS
-            ? Constants.googleApiKeyIos
-            : Constants.googleApiKeyAndroid,
         request: PolylineRequest(
             origin:
                 PointLatLng(sourceLocation.latitude, sourceLocation.longitude),

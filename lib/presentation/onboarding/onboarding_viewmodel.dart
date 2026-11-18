@@ -79,7 +79,7 @@ class OnBoardingViewModel extends BaseViewModel
 }
 
 // inputs mean that "Orders" that our view model will receive from view
-abstract class OnBoardingViewModelInputs {
+abstract mixin class OnBoardingViewModelInputs {
   int goNext(); // when user clicks on right arrow or swipe left
   int goPrevious(); // when user clicks on left arrow or swipe right
   void onPageChanged(int index);
@@ -88,7 +88,7 @@ abstract class OnBoardingViewModelInputs {
   Sink get inputSliderViewObject;
 }
 
-abstract class OnBoardingViewModelOutputs {
+abstract mixin class OnBoardingViewModelOutputs {
   // stream controller output
   Stream<SliderViewObject> get outputSliderViewObject;
 }

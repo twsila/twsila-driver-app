@@ -17,7 +17,7 @@ class AccountDeletionRepo {
       if (data is Map<String, dynamic> && data['success'] != true) {
         throw Exception(data['message'] as String? ?? 'Failed to delete account');
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       throw Exception(formatApiError(e));
     }
   }

@@ -68,7 +68,7 @@ class PricingRepo {
       if (raw == null) return null;
       // TripPriceDetailsDto carries the same fields as the breakdown DTO.
       return OfferPriceBreakdownModel.fromJson(raw);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       if (e.response?.statusCode == 404) return null;
       rethrow;
     }

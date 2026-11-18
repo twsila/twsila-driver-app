@@ -4,7 +4,7 @@ import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 
 /// Formats API / network errors for display in feature screens.
 String formatApiError(Object error) {
-  if (error is DioError) {
+  if (error is DioException) {
     final statusCode = error.response?.statusCode;
     if (statusCode == 404) {
       final detail = _readDioMessage(error) ?? '';
@@ -34,7 +34,7 @@ String formatApiError(Object error) {
   return AppStrings.defaultError.tr();
 }
 
-String? _readDioMessage(DioError error) {
+String? _readDioMessage(DioException error) {
   final data = error.response?.data;
   if (data is String && data.trim().isNotEmpty) {
     return data.trim();

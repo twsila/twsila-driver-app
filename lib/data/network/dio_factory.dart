@@ -63,7 +63,7 @@ class DioFactory {
               _appPreferences.getUserType() ?? "";
           return handler.next(options);
         },
-        onError: (DioError error, handler) async {
+        onError: (DioException error, handler) async {
           if (error.response?.statusCode == 401) {
             if (error.requestOptions.headers[HttpHeaderKeys.retryCounter] ==
                 1) {

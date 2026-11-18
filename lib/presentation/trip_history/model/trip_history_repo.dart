@@ -22,7 +22,7 @@ class TripHistoryRepo {
       final res =
           await _dio.post(EndPointsConstants.driverTripHistory, data: body);
       return _parseHistoryList(_unwrapResult(res.data));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       throw Exception(formatApiError(e));
     }
   }
@@ -41,7 +41,7 @@ class TripHistoryRepo {
         throw Exception('Invalid invoice response');
       }
       return TripInvoice.fromJson(result);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       throw Exception(formatApiError(e));
     }
   }
@@ -58,7 +58,7 @@ class TripHistoryRepo {
         );
       }
       return Uint8List.fromList(res.data!);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       throw Exception(formatApiError(e));
     }
   }

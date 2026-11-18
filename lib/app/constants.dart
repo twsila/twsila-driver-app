@@ -1,3 +1,4 @@
+import 'package:taxi_for_you/flavors.dart';
 import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 
@@ -8,7 +9,7 @@ class Constants {
   static const String empty = "";
   static const String token = "";
   static const int zero = 0;
-  static const int apiTimeOut = 60000;
+  static const Duration apiTimeOut = Duration(milliseconds: 60000);
   static const int onChangeDebounceMilliseconds = 800;
   static const String googleApiKeyAndroid =
       "AIzaSyDudVHh73YAVrXD1CgiJPtIbFbquCmavlA";
@@ -70,6 +71,10 @@ class PaymentConstants {
       "pk_test_DhoknjKhJ1WgngxDP315TgCYBP3DvBtQA3LZc9Up";
   static const String PRODUCTION_KEY =
       "pk_live_JLF3TS9GDjhLAUkW1bmrzpmLA2X1WZ7EW3tBKJLD";
+
+  /// Production/staging → live Moyasar key; development → test key.
+  static String get publishableKey =>
+      F.appFlavor == Flavor.development ? TESTING_KEY : PRODUCTION_KEY;
 }
 
 class UserTypeConstants {

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:taxi_for_you/app/app_prefs.dart';
-import 'package:taxi_for_you/presentation/business_owner/registration/model/Business_owner_model.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_network_image_widget.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/presentation/update_driver_profile/view/widgets/list_documents_images.dart';
@@ -44,19 +43,19 @@ class _UpdateDriverProfileViewState extends State<UpdateDriverProfileView> {
   bool _displayLoadingIndicator = false;
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
-  AppPreferences _appPreferences = instance<AppPreferences>();
+  final AppPreferences _appPreferences = instance<AppPreferences>();
   String currentProfilePhoto = '';
   Driver? driver;
 
   String? captainImagePath;
   ImagePicker imgPicker = ImagePicker();
-  TextEditingController _firstNameController = TextEditingController();
-  TextEditingController _lastNameController = TextEditingController();
-  TextEditingController _mobileNumberController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _mobileNumberController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
-  TextEditingController _nationalIdController = TextEditingController();
-  TextEditingController _plateNumberController = TextEditingController();
+  final TextEditingController _nationalIdController = TextEditingController();
+  final TextEditingController _plateNumberController = TextEditingController();
 
   String? dateOfBirth;
 
@@ -163,7 +162,7 @@ class _UpdateDriverProfileViewState extends State<UpdateDriverProfileView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _profilePhotoHeader(),
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
                 CustomTextInputField(
@@ -379,7 +378,7 @@ class _UpdateDriverProfileViewState extends State<UpdateDriverProfileView> {
                     }
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: AppSize.s50,
                 ),
                 CustomTextButton(
@@ -442,10 +441,10 @@ class _UpdateDriverProfileViewState extends State<UpdateDriverProfileView> {
         future: getProfilePicPath(),
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasData) {
             return Container(
-              margin: EdgeInsets.symmetric(horizontal: AppSize.s16),
+              margin: const EdgeInsets.symmetric(horizontal: AppSize.s16),
               child: Row(
                 children: [
                   Container(
@@ -459,7 +458,7 @@ class _UpdateDriverProfileViewState extends State<UpdateDriverProfileView> {
                               : CustomNetworkImageWidget(
                                   imageUrl: snapshot.data.toString(),
                                 ))),
-                  SizedBox(
+                  const SizedBox(
                     width: AppSize.s16,
                   ),
                   Column(
@@ -490,7 +489,7 @@ class _UpdateDriverProfileViewState extends State<UpdateDriverProfileView> {
               ),
             );
           } else {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           }
         });
   }

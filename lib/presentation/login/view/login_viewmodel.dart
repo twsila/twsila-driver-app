@@ -115,7 +115,7 @@ class LoginViewModel extends BaseViewModel
       _pageStreamController.stream.map((sliderViewObject) => sliderViewObject);
 }
 
-abstract class LoginViewModelInputs {
+abstract mixin class LoginViewModelInputs {
   //Login Methods
   setCountryCode(String countryCode);
 
@@ -131,7 +131,7 @@ abstract class LoginViewModelInputs {
   Sink get inputPageController;
 }
 
-abstract class LoginViewModelOutputs {
+abstract mixin class LoginViewModelOutputs {
   // stream controller output
   Stream<int> get outputPageController;
 }

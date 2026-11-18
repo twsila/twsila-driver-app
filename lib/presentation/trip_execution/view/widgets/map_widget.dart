@@ -200,7 +200,8 @@ class _MapWidgetState extends State<MapWidget> {
     if (!mounted) return;
 
     try {
-      PolylinePoints polylinePoints = PolylinePoints();
+      PolylinePoints polylinePoints = PolylinePoints.legacy(
+          Platform.isIOS ? Constants.googleApiKeyIos : Constants.googleApiKeyAndroid);
       bool isMovedToClient = _isMovedToClientMode;
 
       // CRITICAL: In ARRIVED_PICKUP mode, NEVER fetch current location
@@ -232,9 +233,6 @@ class _MapWidgetState extends State<MapWidget> {
 
           PolylineResult result =
               await polylinePoints.getRouteBetweenCoordinates(
-            googleApiKey: Platform.isIOS
-                ? Constants.googleApiKeyIos
-                : Constants.googleApiKeyAndroid,
             request: PolylineRequest(
               origin: PointLatLng(
                 currentLocation!.latitude,
@@ -310,9 +308,6 @@ class _MapWidgetState extends State<MapWidget> {
 
           PolylineResult result =
               await polylinePoints.getRouteBetweenCoordinates(
-            googleApiKey: Platform.isIOS
-                ? Constants.googleApiKeyIos
-                : Constants.googleApiKeyAndroid,
             request: PolylineRequest(
               origin: PointLatLng(
                 widget.tripModel.tripDetails.pickupLocation.latitude!,
